@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   DALA COFFEE — дизайн-система
+   Tailwind v4: токены живут в @theme и сразу становятся утилитами
+   (bg-espresso, text-cocoa, font-display, text-h1 и т.д.).
+   ========================================================================== */
+
+/* `static` — выгружаем все токены в CSS, даже если утилита пока не
+   использована: дизайн-система должна быть доступна как var(--…) с первого дня. */
+@theme static {
+  /* --- Цвет -------------------------------------------------------------
+     Палитра закрыта намеренно: сбрасываем весь дефолтный namespace, чтобы
+     в проекте физически не существовало утилит вроде bg-blue-500.
+     Кофейная гамма + пыльно-розовый, холодных оттенков нет. */
+  --color-*: initial;
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-inherit: inherit;
+
+  --color-espresso: #2b1a12; /* текст, тёмные секции, главные кнопки */
+  --color-milk: #f7f2ec; /* фон страницы */
+  --color-caramel: #a9714b; /* заливки, активные состояния, крупные цены */
+  --color-cocoa: #8c5a38; /* мелкий текст и ссылки (caramel там слаб: 3.7:1) */
+  --color-blush: #f6e3de; /* фон акцентных блоков и промо */
+  --color-stone: #8a7466; /* второстепенный текст, бордеры, разделители */
+  --color-white: #ffffff;
+
+  /* Приглушённый кирпичный — та же тёплая гамма, из палитры не выбивается.
+     Только ошибки валидации и деструктивные действия («Очистить корзину»).
+     Не для акцентов, бейджей, скидок и «важных» плашек: если он появляется
+     там, где ничего не сломано, он перестаёт работать там, где сломано.
+     Контраст на milk — 6.1:1. На espresso — 2.5:1, поэтому в тёмных секциях
+     ошибку показываем текстом на светлой подложке, а не alert по тёмному.
+     Цвет — никогда не единственный признак ошибки: рядом всегда текст
+     сообщения, а его контейнер — aria-live="polite" (для сабмита формы)
+     и aria-invalid + aria-describedby на самом поле. */
+  --color-alert: #9e3b2b;
+
+  /* --- Шрифты -----------------------------------------------------------
+     Ровно два: Unbounded для заголовков, Inter для текста.
+     Оба покрывают кириллицу и казахские ә ғ қ ң ө ұ ү һ і. */
+  --font-*: initial;
+  --font-display: "Unbounded", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --default-font-family: var(--font-sans);
+
+  /* --- Шкала кеглей -----------------------------------------------------
+     12 / 14 / 16 / 20 / 28 / 40 / 64. Промежуточных значений нет:
+     дефолтная шкала сброшена, чтобы вёрстка не расползалась.
+     Интерлиньяж: 1.6 для текста, 1.2 для заголовков. */
+  --text-*: initial;
+
+  --text-caption: 0.75rem; /* 12 */
+  --text-caption--line-height: 1.6;
+  --text-small: 0.875rem; /* 14 */
+  --text-small--line-height: 1.6;
+  --text-body: 1rem; /* 16 */
+  --text-body--line-height: 1.6;
+  --text-lead: 1.25rem; /* 20 */
+  --text-lead--line-height: 1.6;
+  --text-h3: 1.75rem; /* 28 */
+  --text-h3--line-height: 1.2;
+  --text-h2: 2.5rem; /* 40 */
+  --text-h2--line-height: 1.2;
+  --text-h1: 4rem; /* 64 */
+  --text-h1--line-height: 1.2;
+
+  /* --- Радиусы ----------------------------------------------------------
+     Четыре ступени с разным назначением, чтобы блоки не превратились
+     в один и тот же скруглённый прямоугольник. */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-milk);
+    color: var(--color-espresso);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  a {
+    color: var(--color-cocoa);
+    text-underline-offset: 0.2em;
+  }
+
+  /* Шапка фиксированная — якорь не должен уезжать под неё. */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Фокус с клавиатуры: кольцо cocoa, 2px, отступ 2px. */
+  :focus-visible {
+    outline: 2px solid var(--color-cocoa);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* На тёмной секции cocoa почти не читается — подменяем на blush. */
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-blush);
+  }
+
+  ::selection {
+    background-color: var(--color-blush);
+    color: var(--color-espresso);
+  }
+
+  /* Никаких анимаций тем, кто их выключил. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      /* иначе ступенчатое появление пунктов меню превращается в задержку */
+      transition-delay: 0ms !important;
+    }
+  }
+}
+
+/* --- Утилиты проекта ------------------------------------------------- */
+
+/* Ширина контента страницы. */
+@utility shell {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Длина строки текста — не больше 70 символов. */
+@utility measure {
+  max-width: 70ch;
+}
+
+/* Цены: моноширинные цифры, чтобы столбец не дёргался. */
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ссылка «перейти к содержимому» для клавиатуры. */
+@utility skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -4rem;
+  z-index: 50;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-espresso);
+  color: var(--color-milk);
+  padding: 0.625rem 1rem;
+  font-size: var(--text-small);
+  transition: top 150ms ease;
+
+  &:focus-visible {
+    top: 0.75rem;
+  }
+}

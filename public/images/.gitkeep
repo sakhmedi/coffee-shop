@@ -1,0 +1,2 @@
+Сюда кладём фото: hero, интерьер, напитки.
+Именование: hero.jpg, interior-01.jpg, drink-<id>.jpg (id — из src/data/menu.js).

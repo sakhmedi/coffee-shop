@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title data-i18n="meta.title">DALA COFFEE — кофейня в Астане</title>
+    <meta
+      name="description"
+      data-i18n-content="meta.description"
+      content="DALA COFFEE — кофейня в Астане: классика, авторские напитки на местных вкусах и кофе с собой."
+    />
+    <meta name="theme-color" content="#F7F2EC" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DALA COFFEE" />
+    <meta property="og:title" data-i18n-content="meta.title" content="DALA COFFEE — кофейня в Астане" />
+    <meta
+      property="og:description"
+      data-i18n-content="meta.description"
+      content="DALA COFFEE — кофейня в Астане: классика, авторские напитки на местных вкусах и кофе с собой."
+    />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232B1A12'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23A9714B'/%3E%3C/svg%3E"
+    />
+
+    <!-- Unbounded — заголовки, Inter — текст. Оба с кириллицей и ә ғ қ ң ө ұ ү һ і. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Unbounded:wght@600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main" data-i18n="a11y.skipToContent">Перейти к содержимому</a>
+
+    <!-- ==================== ШАПКА ==================== -->
+    <header
+      data-site-header
+      class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-colors duration-300 data-scrolled:border-stone/20 data-scrolled:bg-milk"
+    >
+      <!-- На узких экранах flex: логотип и правый блок занимают ровно свою
+           ширину. Сетка 1fr-auto-1fr включается там, где хватает места
+           честно отцентровать навигацию. -->
+      <div
+        class="shell flex h-16 items-center justify-between gap-3 md:h-20 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4"
+      >
+        <a
+          href="#hero"
+          data-i18n-aria-label="a11y.toHome"
+          aria-label="DALA COFFEE, наверх страницы"
+          class="justify-self-start whitespace-nowrap font-display text-body font-bold tracking-tight text-espresso no-underline md:text-lead"
+        >
+          DALA COFFEE
+        </a>
+
+        <!-- Обёртка нужна всегда: сама навигация на мобильном display:none,
+             и без обёртки правая колонка сползла бы в центр сетки. -->
+        <div class="justify-self-center">
+          <nav
+            class="hidden lg:block"
+            data-i18n-aria-label="a11y.mainNav"
+            aria-label="Основная навигация"
+          >
+            <ul class="flex items-center gap-8 text-small">
+              <li>
+                <a href="#menu" class="text-espresso no-underline transition-colors hover:text-cocoa" data-i18n="nav.menu">Меню</a>
+              </li>
+              <li>
+                <a href="#about" class="text-espresso no-underline transition-colors hover:text-cocoa" data-i18n="nav.about">О нас</a>
+              </li>
+              <li>
+                <a href="#addresses" class="text-espresso no-underline transition-colors hover:text-cocoa" data-i18n="nav.addresses">Адреса</a>
+              </li>
+              <li>
+                <a href="#contacts" class="text-espresso no-underline transition-colors hover:text-cocoa" data-i18n="nav.contacts">Контакты</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="flex items-center gap-2 justify-self-end md:gap-3">
+          <!-- Переключатель языка: виден на всех ширинах, в бургер не прячется. -->
+          <div
+            data-lang-switcher
+            role="group"
+            data-i18n-aria-label="a11y.langSwitcher"
+            aria-label="Выбор языка"
+            class="flex items-center gap-1.5"
+          >
+            <button
+              type="button"
+              data-lang="ru"
+              aria-pressed="true"
+              class="rounded-pill border border-stone px-3 py-1.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-caramel aria-pressed:bg-caramel aria-pressed:text-white"
+            >
+              RU
+            </button>
+            <button
+              type="button"
+              data-lang="kk"
+              aria-pressed="false"
+              class="rounded-pill border border-stone px-3 py-1.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-caramel aria-pressed:bg-caramel aria-pressed:text-white"
+            >
+              ҚАЗ
+            </button>
+          </div>
+
+          <button
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+            aria-label="Открыть меню"
+            class="group -mr-1 grid h-11 w-11 place-items-center rounded-pill lg:hidden"
+          >
+            <span class="relative block h-3.5 w-6" aria-hidden="true">
+              <span
+                class="absolute inset-x-0 top-0 h-0.5 origin-center rounded-pill bg-espresso transition-transform duration-300 group-aria-expanded:translate-y-1.5 group-aria-expanded:rotate-45"
+              ></span>
+              <span
+                class="absolute inset-x-0 top-1.5 h-0.5 rounded-pill bg-espresso transition-opacity duration-200 group-aria-expanded:opacity-0"
+              ></span>
+              <span
+                class="absolute inset-x-0 top-3 h-0.5 origin-center rounded-pill bg-espresso transition-transform duration-300 group-aria-expanded:-translate-y-1.5 group-aria-expanded:-rotate-45"
+              ></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==================== ПОЛНОЭКРАННОЕ МЕНЮ (моб.) ==================== -->
+    <div
+      id="mobile-menu"
+      data-mobile-menu
+      data-open="false"
+      class="group pointer-events-none fixed inset-0 z-40 bg-milk opacity-0 transition-opacity duration-300 data-[open=true]:pointer-events-auto data-[open=true]:opacity-100 lg:hidden"
+    >
+      <nav
+        class="shell flex h-full flex-col justify-center gap-1 pb-20"
+        data-i18n-aria-label="a11y.mainNav"
+        aria-label="Основная навигация"
+      >
+        <a
+          href="#menu"
+          data-i18n="nav.menu"
+          class="translate-y-3 border-b border-stone/15 py-5 font-display text-h3 text-espresso no-underline opacity-0 transition-[transform,opacity] duration-300 delay-75 group-data-[open=true]:translate-y-0 group-data-[open=true]:opacity-100"
+          >Меню</a
+        >
+        <a
+          href="#about"
+          data-i18n="nav.about"
+          class="translate-y-3 border-b border-stone/15 py-5 font-display text-h3 text-espresso no-underline opacity-0 transition-[transform,opacity] duration-300 delay-125 group-data-[open=true]:translate-y-0 group-data-[open=true]:opacity-100"
+          >О нас</a
+        >
+        <a
+          href="#addresses"
+          data-i18n="nav.addresses"
+          class="translate-y-3 border-b border-stone/15 py-5 font-display text-h3 text-espresso no-underline opacity-0 transition-[transform,opacity] duration-300 delay-175 group-data-[open=true]:translate-y-0 group-data-[open=true]:opacity-100"
+          >Адреса</a
+        >
+        <a
+          href="#contacts"
+          data-i18n="nav.contacts"
+          class="translate-y-3 py-5 font-display text-h3 text-espresso no-underline opacity-0 transition-[transform,opacity] duration-300 delay-225 group-data-[open=true]:translate-y-0 group-data-[open=true]:opacity-100"
+          >Контакты</a
+        >
+      </nav>
+    </div>
+
+    <main id="main">
+      <!-- ==================== HERO ==================== -->
+      <section id="hero" class="shell pt-28 pb-14 md:pt-36 md:pb-20 lg:pt-44">
+        <h1
+          data-i18n="hero.title"
+          class="text-h3 font-bold tracking-[-0.03em] text-espresso sm:text-h2 lg:text-h1"
+        >
+          Кофе в центре степи
+        </h1>
+
+        <div class="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-x-12">
+          <!-- Текстовый блок держим у верха: обе кнопки должны попадать
+               в первый экран. Прижатие к низу фото уводило CTA за фолд. -->
+          <div class="lg:col-span-5 lg:pt-2">
+            <p data-i18n="hero.subtitle" class="measure text-lead text-stone">
+              Кофейня в Астане. Обжарка своя, зерно приходит на точку через три дня после
+              ростера. Открываемся в 8:00.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#menu"
+                data-i18n="hero.ctaMenu"
+                class="rounded-pill bg-espresso px-6 py-3.5 text-body font-medium text-milk no-underline transition-colors hover:bg-cocoa"
+                >Смотреть меню</a
+              >
+              <a
+                href="#addresses"
+                data-i18n="hero.ctaFind"
+                class="rounded-pill border border-espresso/30 px-6 py-3.5 text-body font-medium text-espresso no-underline transition-colors hover:border-espresso hover:bg-espresso/5"
+                >Как нас найти</a
+              >
+            </div>
+          </div>
+
+          <!-- Фото пока нет: остаётся мягкий градиент blush → milk.
+               onerror убирает битую картинку, вёрстка держится на контейнере. -->
+          <div
+            class="relative aspect-4/3 overflow-hidden rounded-lg bg-linear-to-br from-blush to-milk lg:col-span-6 lg:col-start-7 lg:aspect-4/5"
+          >
+            <img
+              src="/images/hero.jpg"
+              alt="Стакан кофе на деревянной стойке"
+              data-i18n-alt="hero.imageAlt"
+              width="1200"
+              height="1500"
+              fetchpriority="high"
+              onerror="this.style.display='none'"
+              class="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ТРИ ФАКТА ==================== -->
+      <div class="shell">
+        <ul
+          class="grid divide-y divide-stone/20 border-y border-stone/20 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+        >
+          <li class="flex items-center gap-3 py-5 sm:pr-6">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-pill bg-caramel" aria-hidden="true"></span>
+            <span data-i18n="facts.beans" class="text-small text-espresso">18 сортов зерна</span>
+          </li>
+          <li class="flex items-center gap-3 py-5 sm:px-6">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-pill bg-caramel" aria-hidden="true"></span>
+            <span data-i18n="facts.roast" class="text-small text-espresso">Обжариваем в Астане</span>
+          </li>
+          <li class="flex items-center gap-3 py-5 sm:pl-6">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-pill bg-caramel" aria-hidden="true"></span>
+            <span data-i18n="facts.hours" class="text-small text-espresso">Открыто до 22:00</span>
+          </li>
+        </ul>
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
