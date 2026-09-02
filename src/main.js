@@ -1,5 +1,9 @@
 import { LANGS, locale } from './data/locale.js';
 import { initI18n, applyLang, getLang, onLangChange, t } from './i18n.js';
+import { initCart } from './cart.js';
+import { initMenuSection } from './ui/menu.js';
+import { initWeekly } from './ui/weekly.js';
+import { initCartPanel } from './ui/cart-panel.js';
 
 const DESKTOP_QUERY = '(min-width: 64rem)'; /* совпадает с брейкпоинтом lg */
 
@@ -125,9 +129,16 @@ function initMobileMenu() {
 
   menu.inert = true;
   syncLabel();
+
+  return { close: () => setOpen(false, { returnFocus: false }) };
 }
 
 initI18n();
+initCart();
 initHeader();
 initLangSwitcher();
-initMobileMenu();
+const mobileMenu = initMobileMenu();
+initMenuSection();
+initWeekly();
+// Корзина открывается поверх всего, поэтому мобильное меню перед ней закрываем.
+initCartPanel({ onBeforeOpen: () => mobileMenu?.close() });

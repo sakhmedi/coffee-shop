@@ -77,14 +77,34 @@ function lookup(dict, key) {
 }
 
 /**
- * Строка интерфейса по ключу. Если перевода нет — берём русский,
- * если и его нет — отдаём сам ключ, чтобы дырка была заметна.
+ * Достаёт строку и подставляет значения. Язык — только явным аргументом,
+ * наружу не торчит: им пользуется лишь translateTree.
+ */
+function translate(key, vars, lang) {
+  const raw = lookup(locale[lang], key) ?? lookup(locale[DEFAULT_LANG], key) ?? key;
+  if (!vars) return raw;
+  return raw.replace(/\{(\w+)\}/g, (match, name) =>
+    name in vars ? String(vars[name]) : match,
+  );
+}
+
+/**
+ * Строка интерфейса по ключу на текущем языке. Если перевода нет — берём
+ * русский, если и его нет — отдаём сам ключ, чтобы дырка была заметна.
+ *
+ * Плейсхолдеры в словаре пишутся как {name}; неизвестное имя остаётся
+ * в тексте как есть — так пропущенную подстановку видно сразу.
+ *
+ * Третьего параметра (языка) здесь намеренно нет: пока он был, вызов
+ * t('nav.menu', lang) выглядел рабочим, но молча возвращал строку без
+ * подстановки. Теперь такой аргумент просто некуда передать.
+ *
  * @param {string} key
- * @param {string} [lang]
+ * @param {Record<string, string|number>} [vars]
  * @returns {string}
  */
-export function t(key, lang = currentLang) {
-  return lookup(locale[lang], key) ?? lookup(locale[DEFAULT_LANG], key) ?? key;
+export function t(key, vars = null) {
+  return translate(key, vars, currentLang);
 }
 
 /**
@@ -100,12 +120,12 @@ export function translateTree(root = document, lang = currentLang) {
     if (!(el instanceof Element)) continue;
 
     const textKey = el.getAttribute('data-i18n');
-    if (textKey) el.textContent = t(textKey, lang);
+    if (textKey) el.textContent = translate(textKey, null, lang);
 
     for (const attr of el.attributes) {
       if (!attr.name.startsWith('data-i18n-')) continue;
       const target = attr.name.slice('data-i18n-'.length);
-      if (target) el.setAttribute(target, t(attr.value, lang));
+      if (target) el.setAttribute(target, translate(attr.value, null, lang));
     }
   }
 }

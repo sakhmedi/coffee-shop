@@ -85,7 +85,7 @@
           </nav>
         </div>
 
-        <div class="flex items-center gap-2 justify-self-end md:gap-3">
+        <div class="flex items-center gap-1.5 justify-self-end sm:gap-2 md:gap-3">
           <!-- Переключатель языка: виден на всех ширинах, в бургер не прячется. -->
           <div
             data-lang-switcher
@@ -98,7 +98,7 @@
               type="button"
               data-lang="ru"
               aria-pressed="true"
-              class="rounded-pill border border-stone px-3 py-1.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-caramel aria-pressed:bg-caramel aria-pressed:text-white"
+              class="rounded-pill border border-stone px-2.5 py-1.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-cocoa aria-pressed:bg-cocoa aria-pressed:text-white sm:px-3"
             >
               RU
             </button>
@@ -106,11 +106,40 @@
               type="button"
               data-lang="kk"
               aria-pressed="false"
-              class="rounded-pill border border-stone px-3 py-1.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-caramel aria-pressed:bg-caramel aria-pressed:text-white"
+              class="rounded-pill border border-stone px-2.5 py-1.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-cocoa aria-pressed:bg-cocoa aria-pressed:text-white sm:px-3"
             >
               ҚАЗ
             </button>
           </div>
+
+          <!-- Счётчик подписан в aria-label кнопки, поэтому сам он aria-hidden. -->
+          <button
+            type="button"
+            data-cart-toggle
+            aria-controls="cart-panel"
+            aria-expanded="false"
+            aria-label="Открыть корзину, позиций: 0"
+            class="relative grid h-11 w-11 place-items-center rounded-pill text-espresso transition-colors hover:bg-blush"
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              class="h-5 w-5"
+            >
+              <path d="M6 8h12l-1.1 11.1A2 2 0 0 1 14.9 21H9.1a2 2 0 0 1-2-1.9L6 8Z" stroke-linejoin="round" />
+              <path d="M9.2 8V6.4a2.8 2.8 0 0 1 5.6 0V8" stroke-linecap="round" />
+            </svg>
+            <span
+              data-cart-count
+              aria-hidden="true"
+              hidden
+              class="tnum absolute right-0 top-0.5 grid h-5 min-w-5 place-items-center rounded-pill bg-espresso px-1 text-caption font-medium text-milk"
+              >0</span
+            >
+          </button>
 
           <button
             type="button"
@@ -248,7 +277,239 @@
           </li>
         </ul>
       </div>
+
+      <!-- ==================== МЕНЮ ==================== -->
+      <section id="menu" class="shell pt-16 pb-14 md:pt-24 md:pb-20">
+        <div class="measure">
+          <h2 data-i18n="menuSection.title" class="text-h3 text-espresso sm:text-h2">Меню</h2>
+          <p data-i18n="menuSection.lead" class="mt-3 text-stone">
+            Варим на своём зерне. Любую позицию можно взять с собой.
+          </p>
+        </div>
+
+        <!-- На мобильном лента скроллится и выходит за поля контейнера:
+             отрицательный margin компенсирует padding у .shell, поэтому
+             крайние кнопки не подрезаются. С md кнопки просто переносятся. -->
+        <div class="no-scrollbar -mx-5 mt-8 overflow-x-auto px-5 md:mx-0 md:overflow-visible md:px-0">
+          <div
+            data-menu-filters
+            role="group"
+            data-i18n-aria-label="a11y.filters"
+            aria-label="Категории напитков"
+            class="flex w-max gap-2 md:w-auto md:flex-wrap"
+          ></div>
+        </div>
+
+        <div
+          data-menu-grid
+          class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        ></div>
+      </section>
+
+      <!-- ==================== НАПИТОК НЕДЕЛИ ==================== -->
+      <section data-weekly class="shell pb-16 md:pb-24">
+        <div class="rounded-lg bg-blush px-6 py-10 md:px-12 md:py-14">
+          <div class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h2 data-i18n="weekly.title" class="text-h3 text-espresso">Напиток недели</h2>
+              <p data-weekly-name class="mt-3 font-display text-h2 font-semibold text-espresso"></p>
+              <p data-i18n="weekly.desc" class="measure mt-4 text-espresso/75">
+                Двойной эспрессо, холодное молоко и лёд — всю неделю дешевле обычного.
+              </p>
+            </div>
+
+            <!-- shrink-0: иначе блок с ценой сжимается под текст слева,
+                 кнопка сваливается под цену и уезжает от правого края. -->
+            <div class="flex flex-wrap items-end gap-x-8 gap-y-5 lg:shrink-0">
+              <p class="tnum flex items-baseline gap-3">
+                <span data-weekly-price class="font-display text-h2 font-semibold text-caramel"></span>
+                <s data-weekly-old class="text-lead text-stone"></s>
+              </p>
+              <button
+                type="button"
+                data-weekly-add
+                class="rounded-pill bg-espresso px-6 py-3.5 font-medium text-milk transition-colors hover:bg-cocoa"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <!-- ==================== КОРЗИНА ==================== -->
+    <div
+      id="cart-panel"
+      data-cart-panel
+      data-open="false"
+      class="group pointer-events-none fixed inset-0 z-60 data-[open=true]:pointer-events-auto"
+    >
+      <div
+        data-cart-backdrop
+        class="absolute inset-0 bg-espresso/40 opacity-0 transition-opacity duration-300 group-data-[open=true]:opacity-100"
+      ></div>
+
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-title"
+        class="absolute inset-y-0 right-0 flex w-full max-w-100 translate-x-full flex-col bg-milk transition-transform duration-300 group-data-[open=true]:translate-x-0"
+      >
+        <div class="flex items-center justify-between gap-4 border-b border-stone/20 px-6 py-5">
+          <h2 id="cart-title" data-i18n="cart.title" class="text-h3 text-espresso">Корзина</h2>
+          <button
+            type="button"
+            data-cart-close
+            data-i18n-aria-label="a11y.closeCart"
+            aria-label="Закрыть корзину"
+            class="-mr-2 grid h-11 w-11 place-items-center rounded-pill text-espresso transition-colors hover:bg-blush"
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              class="h-5 w-5"
+            >
+              <path d="m7 7 10 10M17 7 7 17" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-6">
+          <!-- Пустая корзина — приглашение, а не сообщение об отсутствии. -->
+          <div data-cart-empty hidden class="flex flex-col items-start gap-5 py-10">
+            <p data-i18n="cart.empty" class="measure text-lead text-espresso">
+              Тут пока ничего нет. Начните с латте
+            </p>
+            <button
+              type="button"
+              data-cart-empty-cta
+              data-i18n="actions.allDrinks"
+              class="rounded-pill bg-espresso px-5 py-3 text-small font-medium text-milk transition-colors hover:bg-cocoa"
+            >
+              Все напитки
+            </button>
+          </div>
+
+          <ul data-cart-list hidden class="py-2"></ul>
+        </div>
+
+        <!-- Изменения количества объявляются здесь, а не тостом: тост на
+             каждый клик по «+» был бы визуальным шумом поверх открытой панели.
+             Регион присутствует в разметке с самого начала — иначе первое
+             объявление не прозвучит. -->
+        <p data-cart-live class="sr-only" aria-live="polite" aria-atomic="true"></p>
+
+        <div data-cart-summary hidden class="border-t border-stone/20 px-6 py-5">
+          <div class="flex items-baseline justify-between gap-4">
+            <span data-i18n="cart.total" class="text-espresso">Итого</span>
+            <span data-cart-total class="tnum font-display text-h3 font-semibold text-caramel"></span>
+          </div>
+
+          <!-- Деструктивное действие: цвет alert, но не сплошной заливкой —
+               «Очистить» не должно быть самой заметной кнопкой в панели. -->
+          <button
+            type="button"
+            data-cart-clear
+            data-i18n="actions.clear"
+            class="mt-5 w-full rounded-pill border border-alert/40 py-3 text-small font-medium text-alert transition-colors hover:bg-alert/8"
+          >
+            Очистить
+          </button>
+        </div>
+
+        <p
+          data-i18n="cart.note"
+          class="border-t border-stone/20 px-6 py-5 text-small text-stone"
+        >
+          Оплата и доставка появятся позже. Пока просто приходите к нам.
+        </p>
+      </aside>
+    </div>
+
+    <!-- ==================== ТОСТ ==================== -->
+    <div
+      data-modal-keep
+      aria-live="polite"
+      aria-atomic="true"
+      class="pointer-events-none fixed inset-x-0 bottom-0 z-70 flex justify-center px-4 pb-6"
+    >
+      <p
+        data-toast
+        class="translate-y-2 rounded-pill bg-espresso px-5 py-3 text-small text-milk opacity-0 transition-[opacity,transform] duration-200 data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+      ></p>
+    </div>
+
+    <!-- ==================== ШАБЛОНЫ ДЛЯ JS ==================== -->
+    <template data-template="filter-button">
+      <button
+        type="button"
+        data-filter
+        aria-pressed="false"
+        class="shrink-0 rounded-pill border border-stone px-4 py-2 text-small font-medium whitespace-nowrap text-espresso transition-colors hover:border-cocoa aria-pressed:border-espresso aria-pressed:bg-espresso aria-pressed:text-white"
+      ></button>
+    </template>
+
+    <template data-template="drink-card">
+      <article
+        class="relative flex flex-col rounded-md border border-stone/20 p-5 transition-colors hover:border-espresso/35"
+      >
+        <p
+          data-badge
+          class="absolute top-4 right-4 rounded-pill bg-cocoa px-2.5 py-1 text-caption font-medium text-white"
+        ></p>
+        <h3 data-name class="font-display text-lead font-semibold text-espresso"></h3>
+        <p data-desc class="mt-2 text-small text-stone"></p>
+        <!-- Цена и кнопка всегда в столбик: при justify-between короткая цена
+             («900 ₸») оставляла кнопку в строке, а длинная переносила её,
+             и кнопки в соседних карточках оказывались на разной высоте. -->
+        <div class="mt-auto flex flex-col items-start gap-4 pt-6">
+          <p class="tnum flex items-baseline gap-2">
+            <span data-price class="font-display text-h3 font-semibold text-caramel"></span>
+            <s data-old-price class="text-small text-stone"></s>
+          </p>
+          <button
+            type="button"
+            data-add
+            class="rounded-pill bg-espresso px-4 py-2.5 text-small font-medium text-milk transition-colors hover:bg-cocoa"
+          ></button>
+        </div>
+      </article>
+    </template>
+
+    <template data-template="cart-line">
+      <li class="flex items-start justify-between gap-4 border-b border-stone/15 py-4 last:border-0">
+        <div class="min-w-0 pt-2.5">
+          <p data-line-name class="text-espresso"></p>
+          <p data-line-unit class="tnum mt-1 text-caption text-stone"></p>
+        </div>
+
+        <div class="shrink-0">
+          <div class="flex items-center gap-1">
+            <!-- 44×44 — минимальная цель для пальца; подпись у каждой кнопки
+                 своя, с названием напитка, потому что кнопок в списке много. -->
+            <button
+              type="button"
+              data-qty="dec"
+              class="grid h-11 w-11 place-items-center rounded-pill border border-stone/40 text-lead text-espresso transition-colors hover:border-espresso hover:bg-blush"
+            >
+              −
+            </button>
+            <span data-line-qty class="tnum w-7 text-center text-espresso"></span>
+            <button
+              type="button"
+              data-qty="inc"
+              class="grid h-11 w-11 place-items-center rounded-pill border border-stone/40 text-lead text-espresso transition-colors hover:border-espresso hover:bg-blush"
+            >
+              +
+            </button>
+          </div>
+          <p data-line-sum class="tnum mt-1 text-right text-small text-espresso"></p>
+        </div>
+      </li>
+    </template>
 
     <script type="module" src="/src/main.js"></script>
   </body>
