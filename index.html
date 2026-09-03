@@ -334,7 +334,510 @@
           </div>
         </div>
       </section>
+
+      <!-- ==================== О НАС ==================== -->
+      <!-- Фото слева, текст справа — зеркально hero, чтобы две соседние
+           секции не читались как один и тот же макет. -->
+      <section id="about" class="shell pb-16 md:pb-24">
+        <div class="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-x-12">
+          <!-- Фото пока нет: остаётся тёплая подложка. blush здесь не берём —
+               он уже занят в hero и в «Напитке недели». -->
+          <div
+            class="relative aspect-4/3 overflow-hidden rounded-lg bg-linear-to-br from-caramel/20 to-milk lg:col-span-5 lg:aspect-square"
+          >
+            <img
+              src="/images/about.jpg"
+              alt="Ростер и мешки с зерном в обжарочной"
+              data-i18n-alt="about.imageAlt"
+              width="1000"
+              height="1000"
+              loading="lazy"
+              onerror="this.style.display='none'"
+              class="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
+
+          <div class="lg:col-span-6 lg:col-start-7">
+            <h2 data-i18n="about.title" class="text-h3 text-espresso sm:text-h2">О нас</h2>
+
+            <p data-i18n="about.p1" class="measure mt-6 text-lead text-espresso">
+              Зерно обжариваем сами — здесь же, в Астане, партиями по двенадцать
+              килограммов. Партия расходится за три-четыре дня, поэтому в чашку попадает
+              кофе этой недели, а не прошлого месяца.
+            </p>
+            <p data-i18n="about.p2" class="measure mt-5 text-stone">
+              Воду фильтруем, картриджи меняем по графику, а не когда заметим. На городской
+              воде тот же кофе горчит — разницу слышно с первого глотка.
+            </p>
+            <p data-i18n="about.p3" class="measure mt-5 text-stone">
+              Зимой наливаем в ваш термостакан бесплатно. Приносите любой — хоть
+              подаренный, хоть купленный не у нас. Скажите об этом на кассе до заказа.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== АДРЕСА ==================== -->
+      <!-- Обе точки, телефон и почта вымышленные: кофейни не существует,
+           сайт учебный. -->
+      <section id="addresses" class="shell pb-16 md:pb-24">
+        <div class="measure">
+          <h2 data-i18n="addresses.title" class="text-h3 text-espresso sm:text-h2">Адреса</h2>
+          <p data-i18n="addresses.lead" class="mt-3 text-stone">
+            Две точки в Астане. Кофе с собой готовим на обеих.
+          </p>
+        </div>
+
+        <div class="mt-8 grid gap-4 lg:grid-cols-12 lg:gap-6">
+          <div class="grid gap-4 lg:col-span-5">
+            <article
+              class="rounded-md border border-stone/20 p-6 transition-colors hover:border-espresso/35"
+            >
+              <h3
+                data-i18n="addresses.esil.name"
+                class="font-display text-lead font-semibold text-espresso"
+              >
+                Есильский район
+              </h3>
+              <p data-i18n="addresses.esil.street" class="mt-2 text-espresso">
+                ул. Достык 12, ТЦ, первый этаж
+              </p>
+
+              <p data-i18n="info.hours" class="mt-4 text-small text-stone">Часы работы</p>
+              <p data-i18n="addresses.esil.hoursWeekday" class="tnum mt-1 text-small text-espresso">
+                Пн–Пт 08:00–22:00
+              </p>
+              <p data-i18n="addresses.esil.hoursWeekend" class="tnum text-small text-espresso">
+                Сб–Вс 09:00–23:00
+              </p>
+
+              <p class="mt-4">
+                <a
+                  href="tel:+77001234567"
+                  data-i18n="contacts.phone"
+                  class="tnum text-small text-cocoa"
+                  >+7 700 123 45 67</a
+                >
+              </p>
+
+              <!-- Внешняя ссылка: подпись в отдельном span, иначе data-i18n
+                   затрёт вместе с текстом и иконку. -->
+              <a
+                href="https://2gis.kz/astana/search/Достык%2012"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-5 inline-flex items-center gap-2 rounded-pill border border-espresso/30 px-4 py-2.5 text-small font-medium text-espresso no-underline transition-colors hover:border-espresso hover:bg-espresso/5"
+              >
+                <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-4 w-4"
+                >
+                  <path d="M9 15 15 9M10 9h5v5" />
+                </svg>
+              </a>
+            </article>
+
+            <article
+              class="rounded-md border border-stone/20 p-6 transition-colors hover:border-espresso/35"
+            >
+              <h3
+                data-i18n="addresses.saryarka.name"
+                class="font-display text-lead font-semibold text-espresso"
+              >
+                Район Сарыарқа
+              </h3>
+              <p data-i18n="addresses.saryarka.street" class="mt-2 text-espresso">
+                пр. Абая 40
+              </p>
+
+              <p data-i18n="info.hours" class="mt-4 text-small text-stone">Часы работы</p>
+              <p data-i18n="addresses.saryarka.hours" class="tnum mt-1 text-small text-espresso">
+                Ежедневно 08:00–21:00
+              </p>
+
+              <p class="mt-4">
+                <a
+                  href="tel:+77001234567"
+                  data-i18n="contacts.phone"
+                  class="tnum text-small text-cocoa"
+                  >+7 700 123 45 67</a
+                >
+              </p>
+
+              <a
+                href="https://2gis.kz/astana/search/Абая%2040"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-5 inline-flex items-center gap-2 rounded-pill border border-espresso/30 px-4 py-2.5 text-small font-medium text-espresso no-underline transition-colors hover:border-espresso hover:bg-espresso/5"
+              >
+                <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-4 w-4"
+                >
+                  <path d="M9 15 15 9M10 9h5v5" />
+                </svg>
+              </a>
+            </article>
+          </div>
+
+          <div class="flex flex-col gap-2 lg:col-span-7">
+            <div
+              class="relative aspect-4/3 overflow-hidden rounded-lg border border-stone/20 lg:aspect-auto lg:flex-1"
+            >
+              <!-- Запасной блок лежит под iframe и виден, пока карта не
+                   загрузилась. Для скринридера он скрыт: те же адреса уже
+                   прочитаны в карточках слева, дубль только мешает. -->
+              <div
+                aria-hidden="true"
+                class="absolute inset-0 flex flex-col justify-center gap-5 bg-milk p-6"
+              >
+                <div>
+                  <p data-i18n="addresses.esil.name" class="font-display font-semibold text-espresso">
+                    Есильский район
+                  </p>
+                  <p data-i18n="addresses.esil.street" class="text-small text-stone">
+                    ул. Достык 12, ТЦ, первый этаж
+                  </p>
+                </div>
+                <div>
+                  <p
+                    data-i18n="addresses.saryarka.name"
+                    class="font-display font-semibold text-espresso"
+                  >
+                    Район Сарыарқа
+                  </p>
+                  <p data-i18n="addresses.saryarka.street" class="text-small text-stone">
+                    пр. Абая 40
+                  </p>
+                </div>
+              </div>
+
+              <!-- Пока карта не загрузилась, iframe прозрачен и не ловит
+                   клики — под ним виден блок с адресами. -->
+              <iframe
+                title="Карта Астаны: районы, где мы работаем"
+                data-i18n-title="addresses.mapTitle"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=71.36%2C51.09%2C71.60%2C51.22&amp;layer=mapnik"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                onload="this.dataset.loaded = 'true'"
+                class="pointer-events-none absolute inset-0 h-full w-full border-0 opacity-0 transition-opacity duration-300 data-[loaded=true]:pointer-events-auto data-[loaded=true]:opacity-100"
+              ></iframe>
+            </div>
+
+            <p class="text-caption text-stone">
+              <a
+                href="https://www.openstreetmap.org/copyright"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-i18n="addresses.mapCredit"
+                >Карта: © участники OpenStreetMap</a
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== НАПИСАТЬ НАМ ==================== -->
+      <section id="contacts" class="shell pb-16 md:pb-24">
+        <div class="grid gap-10 lg:grid-cols-12 lg:gap-x-12">
+          <div class="lg:col-span-5">
+            <h2 data-i18n="form.title" class="text-h3 text-espresso sm:text-h2">Написать нам</h2>
+            <p data-i18n="form.lead" class="measure mt-3 text-stone">
+              Вопрос, отзыв, идея для авторского напитка — пишите, читаем сами.
+            </p>
+
+            <ul class="mt-8 grid gap-2 text-small">
+              <li>
+                <a href="tel:+77001234567" data-i18n="contacts.phone" class="tnum text-cocoa"
+                  >+7 700 123 45 67</a
+                >
+              </li>
+              <li>
+                <a href="mailto:hello@dalacoffee.kz" data-i18n="contacts.email" class="text-cocoa"
+                  >hello@dalacoffee.kz</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Бэкенда нет: submit обрабатывается на клиенте, novalidate снимает
+               встроенные подсказки браузера — они не переводятся вместе
+               с интерфейсом и звучат не нашим голосом. -->
+          <form data-contact-form novalidate class="lg:col-span-6 lg:col-start-7">
+            <div class="grid gap-5">
+              <div>
+                <label
+                  for="contact-name"
+                  data-i18n="form.nameLabel"
+                  class="block text-small font-medium text-espresso"
+                  >Как вас зовут</label
+                >
+                <input
+                  id="contact-name"
+                  name="name"
+                  type="text"
+                  data-field="name"
+                  autocomplete="name"
+                  aria-describedby="contact-name-error"
+                  class="mt-2 w-full rounded-md border border-stone/40 bg-white px-4 py-3 text-espresso transition-colors hover:border-stone aria-invalid:border-alert"
+                />
+                <p id="contact-name-error" data-error="name" hidden class="mt-2 text-small text-alert"></p>
+              </div>
+
+              <div>
+                <label
+                  for="contact-reply"
+                  data-i18n="form.contactLabel"
+                  class="block text-small font-medium text-espresso"
+                  >Телефон или почта</label
+                >
+                <input
+                  id="contact-reply"
+                  name="reply"
+                  type="text"
+                  data-field="reply"
+                  aria-describedby="contact-reply-hint contact-reply-error"
+                  class="mt-2 w-full rounded-md border border-stone/40 bg-white px-4 py-3 text-espresso transition-colors hover:border-stone aria-invalid:border-alert"
+                />
+                <p id="contact-reply-hint" data-i18n="form.contactHint" class="mt-2 text-caption text-stone">
+                  Ответим тем же способом, каким вы напишете.
+                </p>
+                <p id="contact-reply-error" data-error="reply" hidden class="mt-2 text-small text-alert"></p>
+              </div>
+
+              <div>
+                <label
+                  for="contact-message"
+                  data-i18n="form.messageLabel"
+                  class="block text-small font-medium text-espresso"
+                  >Сообщение</label
+                >
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  rows="5"
+                  data-field="message"
+                  aria-describedby="contact-message-error"
+                  class="mt-2 w-full resize-y rounded-md border border-stone/40 bg-white px-4 py-3 text-espresso transition-colors hover:border-stone aria-invalid:border-alert"
+                ></textarea>
+                <p id="contact-message-error" data-error="message" hidden class="mt-2 text-small text-alert"></p>
+              </div>
+            </div>
+
+            <!-- Регион состояния живёт в разметке с самого начала и никогда
+                 не прячется через hidden: спрятанный aria-live ничего
+                 не объявит. Пустым он просто не занимает высоты. -->
+            <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <button
+                type="submit"
+                data-i18n="actions.send"
+                class="rounded-pill bg-espresso px-6 py-3.5 font-medium text-milk transition-colors hover:bg-cocoa"
+              >
+                Отправить
+              </button>
+              <p
+                data-form-status
+                aria-live="polite"
+                aria-atomic="true"
+                class="text-small data-[state=error]:text-alert data-[state=ok]:text-cocoa"
+              ></p>
+            </div>
+          </form>
+        </div>
+      </section>
     </main>
+
+    <!-- ==================== ПОДВАЛ ==================== -->
+    <!-- on-dark переключает кольцо фокуса на blush: cocoa по espresso
+         почти не виден. Аккаунты в соцсетях вымышленные. -->
+    <footer class="on-dark bg-espresso text-milk">
+      <div class="shell py-14 md:py-16">
+        <div class="grid gap-10 md:grid-cols-2 md:gap-x-8 lg:grid-cols-3">
+          <nav data-i18n-aria-label="a11y.footerNav" aria-label="Навигация по сайту">
+            <h2
+              data-i18n="footer.navTitle"
+              class="font-display text-caption font-semibold tracking-[0.14em] text-milk/55 uppercase"
+            >
+              Навигация
+            </h2>
+            <ul class="mt-4 grid gap-2 text-small">
+              <li>
+                <a href="#menu" data-i18n="nav.menu" class="text-milk/75 no-underline transition-colors hover:text-milk">Меню</a>
+              </li>
+              <li>
+                <a href="#about" data-i18n="nav.about" class="text-milk/75 no-underline transition-colors hover:text-milk">О нас</a>
+              </li>
+              <li>
+                <a href="#addresses" data-i18n="nav.addresses" class="text-milk/75 no-underline transition-colors hover:text-milk">Адреса</a>
+              </li>
+              <li>
+                <a href="#contacts" data-i18n="nav.contacts" class="text-milk/75 no-underline transition-colors hover:text-milk">Контакты</a>
+              </li>
+            </ul>
+          </nav>
+
+          <div>
+            <h2
+              data-i18n="footer.contactsTitle"
+              class="font-display text-caption font-semibold tracking-[0.14em] text-milk/55 uppercase"
+            >
+              Контакты
+            </h2>
+            <ul class="mt-4 grid gap-2 text-small">
+              <li>
+                <a
+                  href="tel:+77001234567"
+                  data-i18n="contacts.phone"
+                  class="tnum text-milk/75 no-underline transition-colors hover:text-milk"
+                  >+7 700 123 45 67</a
+                >
+              </li>
+              <li>
+                <a
+                  href="mailto:hello@dalacoffee.kz"
+                  data-i18n="contacts.email"
+                  class="text-milk/75 no-underline transition-colors hover:text-milk"
+                  >hello@dalacoffee.kz</a
+                >
+              </li>
+              <li data-i18n="footer.hours" class="text-milk/55">Ежедневно с 8:00</li>
+            </ul>
+          </div>
+
+          <!-- На планшете третья колонка занимает всю вторую строку сетки,
+               иначе иконки болтались бы в полупустой ячейке. -->
+          <div class="md:col-span-2 lg:col-span-1">
+            <h2
+              data-i18n="footer.socialTitle"
+              class="font-display text-caption font-semibold tracking-[0.14em] text-milk/55 uppercase"
+            >
+              Соцсети
+            </h2>
+            <ul class="mt-4 flex gap-3">
+              <li>
+                <a
+                  href="https://www.instagram.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-i18n-aria-label="a11y.instagram"
+                  aria-label="Мы в Instagram"
+                  class="grid h-11 w-11 place-items-center rounded-pill border border-milk/25 text-milk no-underline transition-colors hover:border-milk hover:bg-milk/10"
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    class="h-5 w-5"
+                  >
+                    <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.1" cy="6.9" r="1.05" fill="currentColor" stroke="none" />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://t.me/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-i18n-aria-label="a11y.telegram"
+                  aria-label="Наш канал в Telegram"
+                  class="grid h-11 w-11 place-items-center rounded-pill border border-milk/25 text-milk no-underline transition-colors hover:border-milk hover:bg-milk/10"
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linejoin="round"
+                    class="h-5 w-5"
+                  >
+                    <path d="M21.4 4.3 2.9 11.4a.5.5 0 0 0 0 .9l4.5 1.6 1.7 5.1a.5.5 0 0 0 .9.2l2.4-2.7 4.3 3.1a.5.5 0 0 0 .8-.3l3.6-14.2a.5.5 0 0 0-.7-.8Z" />
+                    <path d="m7.4 13.9 11.1-8" />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/77001234567"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-i18n-aria-label="a11y.whatsapp"
+                  aria-label="Написать в WhatsApp"
+                  class="grid h-11 w-11 place-items-center rounded-pill border border-milk/25 text-milk no-underline transition-colors hover:border-milk hover:bg-milk/10"
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linejoin="round"
+                    class="h-5 w-5"
+                  >
+                    <path d="M12 3.6a8.4 8.4 0 0 0-7.2 12.7l-1.2 4.1 4.3-1.1A8.4 8.4 0 1 0 12 3.6Z" />
+                    <path d="M9.4 8.1c.2 1.5.9 2.9 2 4s2.5 1.8 4 2l.9-1.7-2-1-.9.8a6 6 0 0 1-2.1-2.1l.8-.9-1-2-1.7.9Z" />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="mt-12 flex flex-col gap-5 border-t border-milk/15 pt-6 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p data-i18n="footer.copy" class="text-caption text-milk/70">
+            © 2026 DALA COFFEE. Вымышленная кофейня, сайт учебный
+          </p>
+
+          <!-- Второй переключатель языка: длинную страницу не нужно
+               отматывать наверх ради смены языка. -->
+          <div
+            data-lang-switcher
+            role="group"
+            data-i18n-aria-label="a11y.langSwitcher"
+            aria-label="Выбор языка"
+            class="flex items-center gap-1.5"
+          >
+            <button
+              type="button"
+              data-lang="ru"
+              aria-pressed="true"
+              class="rounded-pill border border-milk/30 px-3 py-1.5 text-small font-medium text-milk transition-colors hover:border-milk aria-pressed:border-milk aria-pressed:bg-milk aria-pressed:text-espresso"
+            >
+              RU
+            </button>
+            <button
+              type="button"
+              data-lang="kk"
+              aria-pressed="false"
+              class="rounded-pill border border-milk/30 px-3 py-1.5 text-small font-medium text-milk transition-colors hover:border-milk aria-pressed:border-milk aria-pressed:bg-milk aria-pressed:text-espresso"
+            >
+              ҚАЗ
+            </button>
+          </div>
+        </div>
+      </div>
+    </footer>
 
     <!-- ==================== КОРЗИНА ==================== -->
     <div

@@ -4,6 +4,7 @@ import { initCart } from './cart.js';
 import { initMenuSection } from './ui/menu.js';
 import { initWeekly } from './ui/weekly.js';
 import { initCartPanel } from './ui/cart-panel.js';
+import { initContactForm } from './ui/contact-form.js';
 
 const DESKTOP_QUERY = '(min-width: 64rem)'; /* совпадает с брейкпоинтом lg */
 
@@ -33,15 +34,19 @@ function initHeader() {
 }
 
 /**
- * Переключатель языков.
+ * Переключатели языков. Их два — в шапке и в подвале, — поэтому работаем
+ * со всеми сразу: нажатие в одном должно подсветиться и в другом.
+ *
  * Подписи (RU / ҚАЗ) берём из LANGS, а не из словаря: название языка
  * не переводится — кнопка «ҚАЗ» подписана так же и в русском интерфейсе.
  */
 function initLangSwitcher() {
-  const switcher = document.querySelector('[data-lang-switcher]');
-  if (!switcher) return;
+  const switchers = [...document.querySelectorAll('[data-lang-switcher]')];
+  if (switchers.length === 0) return;
 
-  const buttons = [...switcher.querySelectorAll('[data-lang]')];
+  const buttons = switchers.flatMap((switcher) => [
+    ...switcher.querySelectorAll('[data-lang]'),
+  ]);
 
   for (const button of buttons) {
     const lang = LANGS.find((item) => item.code === button.dataset.lang);
@@ -57,11 +62,13 @@ function initLangSwitcher() {
     }
   };
 
-  switcher.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-lang]');
-    if (!button || !switcher.contains(button)) return;
-    applyLang(button.dataset.lang);
-  });
+  for (const switcher of switchers) {
+    switcher.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-lang]');
+      if (!button || !switcher.contains(button)) return;
+      applyLang(button.dataset.lang);
+    });
+  }
 
   onLangChange(sync);
   sync(getLang());
@@ -140,5 +147,6 @@ initLangSwitcher();
 const mobileMenu = initMobileMenu();
 initMenuSection();
 initWeekly();
+initContactForm();
 // Корзина открывается поверх всего, поэтому мобильное меню перед ней закрываем.
 initCartPanel({ onBeforeOpen: () => mobileMenu?.close() });
