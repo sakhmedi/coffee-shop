@@ -20,11 +20,11 @@
       data-i18n-content="meta.description"
       content="DALA COFFEE — кофейня в Астане: классика, авторские напитки на местных вкусах и кофе с собой."
     />
+    <!-- Локаль тоже переключается вместе с языком: превью ссылки должно
+         совпадать с тем, что человек увидит на странице. -->
+    <meta property="og:locale" data-i18n-content="meta.ogLocale" content="ru_RU" />
 
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232B1A12'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23A9714B'/%3E%3C/svg%3E"
-    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <!-- Unbounded — заголовки, Inter — текст. Оба с кириллицей и ә ғ қ ң ө ұ ү һ і. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -49,15 +49,18 @@
            ширину. Сетка 1fr-auto-1fr включается там, где хватает места
            честно отцентровать навигацию. -->
       <div
-        class="shell flex h-16 items-center justify-between gap-3 md:h-20 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4"
+        class="shell flex h-16 items-center justify-between gap-2 md:h-20 sm:gap-3 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4"
       >
         <a
           href="#hero"
           data-i18n-aria-label="a11y.toHome"
           aria-label="DALA COFFEE, наверх страницы"
-          class="justify-self-start whitespace-nowrap font-display text-body font-bold tracking-tight text-espresso no-underline md:text-lead"
+          class="justify-self-start py-1.5 whitespace-nowrap font-display text-small font-bold tracking-tight text-espresso no-underline sm:text-body md:text-lead"
         >
-          DALA COFFEE
+          <!-- Уже 375 px «DALA COFFEE» + переключатель языка + корзина +
+               бургер в строку не помещаются. Ниже этой ширины оставляем
+               «DALA»; полное имя остаётся в aria-label. -->
+          DALA<span class="max-[374px]:hidden"> COFFEE</span>
         </a>
 
         <!-- Обёртка нужна всегда: сама навигация на мобильном display:none,
@@ -98,7 +101,7 @@
               type="button"
               data-lang="ru"
               aria-pressed="true"
-              class="rounded-pill border border-stone px-2.5 py-1.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-cocoa aria-pressed:bg-cocoa aria-pressed:text-white sm:px-3"
+              class="min-w-11 rounded-pill border border-stone px-2 py-2.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-cocoa aria-pressed:bg-cocoa aria-pressed:text-white sm:px-3"
             >
               RU
             </button>
@@ -106,7 +109,7 @@
               type="button"
               data-lang="kk"
               aria-pressed="false"
-              class="rounded-pill border border-stone px-2.5 py-1.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-cocoa aria-pressed:bg-cocoa aria-pressed:text-white sm:px-3"
+              class="min-w-11 rounded-pill border border-stone px-2 py-2.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-cocoa aria-pressed:bg-cocoa aria-pressed:text-white sm:px-3"
             >
               ҚАЗ
             </button>
@@ -147,7 +150,7 @@
             aria-expanded="false"
             aria-controls="mobile-menu"
             aria-label="Открыть меню"
-            class="group -mr-1 grid h-11 w-11 place-items-center rounded-pill lg:hidden"
+            class="group -mr-2 grid h-11 w-11 place-items-center rounded-pill lg:hidden"
           >
             <span class="relative block h-3.5 w-6" aria-hidden="true">
               <span
@@ -218,7 +221,7 @@
           <!-- Текстовый блок держим у верха: обе кнопки должны попадать
                в первый экран. Прижатие к низу фото уводило CTA за фолд. -->
           <div class="lg:col-span-5 lg:pt-2">
-            <p data-i18n="hero.subtitle" class="measure text-lead text-stone">
+            <p data-i18n="hero.subtitle" class="measure text-lead text-espresso/75">
               Кофейня в Астане. Обжарка своя, зерно приходит на точку через три дня после
               ростера. Открываемся в 8:00.
             </p>
@@ -263,16 +266,13 @@
         <ul
           class="grid divide-y divide-stone/20 border-y border-stone/20 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
         >
-          <li class="flex items-center gap-3 py-5 sm:pr-6">
-            <span class="h-1.5 w-1.5 shrink-0 rounded-pill bg-caramel" aria-hidden="true"></span>
+          <li class="py-5 sm:pr-6">
             <span data-i18n="facts.beans" class="text-small text-espresso">18 сортов зерна</span>
           </li>
-          <li class="flex items-center gap-3 py-5 sm:px-6">
-            <span class="h-1.5 w-1.5 shrink-0 rounded-pill bg-caramel" aria-hidden="true"></span>
+          <li class="py-5 sm:px-6">
             <span data-i18n="facts.roast" class="text-small text-espresso">Обжариваем в Астане</span>
           </li>
-          <li class="flex items-center gap-3 py-5 sm:pl-6">
-            <span class="h-1.5 w-1.5 shrink-0 rounded-pill bg-caramel" aria-hidden="true"></span>
+          <li class="py-5 sm:pl-6">
             <span data-i18n="facts.hours" class="text-small text-espresso">Открыто до 22:00</span>
           </li>
         </ul>
@@ -282,7 +282,7 @@
       <section id="menu" class="shell pt-16 pb-14 md:pt-24 md:pb-20">
         <div class="measure">
           <h2 data-i18n="menuSection.title" class="text-h3 text-espresso sm:text-h2">Меню</h2>
-          <p data-i18n="menuSection.lead" class="mt-3 text-stone">
+          <p data-i18n="menuSection.lead" class="mt-3 text-espresso/75">
             Варим на своём зерне. Любую позицию можно взять с собой.
           </p>
         </div>
@@ -323,7 +323,7 @@
             <div class="flex flex-wrap items-end gap-x-8 gap-y-5 lg:shrink-0">
               <p class="tnum flex items-baseline gap-3">
                 <span data-weekly-price class="font-display text-h2 font-semibold text-caramel"></span>
-                <s data-weekly-old class="text-lead text-stone"></s>
+                <s data-weekly-old class="text-lead text-espresso/75"></s>
               </p>
               <button
                 type="button"
@@ -365,11 +365,11 @@
               килограммов. Партия расходится за три-четыре дня, поэтому в чашку попадает
               кофе этой недели, а не прошлого месяца.
             </p>
-            <p data-i18n="about.p2" class="measure mt-5 text-stone">
+            <p data-i18n="about.p2" class="measure mt-5 text-espresso/75">
               Воду фильтруем, картриджи меняем по графику, а не когда заметим. На городской
               воде тот же кофе горчит — разницу слышно с первого глотка.
             </p>
-            <p data-i18n="about.p3" class="measure mt-5 text-stone">
+            <p data-i18n="about.p3" class="measure mt-5 text-espresso/75">
               Зимой наливаем в ваш термостакан бесплатно. Приносите любой — хоть
               подаренный, хоть купленный не у нас. Скажите об этом на кассе до заказа.
             </p>
@@ -383,7 +383,7 @@
       <section id="addresses" class="shell pb-16 md:pb-24">
         <div class="measure">
           <h2 data-i18n="addresses.title" class="text-h3 text-espresso sm:text-h2">Адреса</h2>
-          <p data-i18n="addresses.lead" class="mt-3 text-stone">
+          <p data-i18n="addresses.lead" class="mt-3 text-espresso/75">
             Две точки в Астане. Кофе с собой готовим на обеих.
           </p>
         </div>
@@ -403,7 +403,7 @@
                 ул. Достык 12, ТЦ, первый этаж
               </p>
 
-              <p data-i18n="info.hours" class="mt-4 text-small text-stone">Часы работы</p>
+              <p data-i18n="info.hours" class="mt-4 text-small text-espresso/75">Часы работы</p>
               <p data-i18n="addresses.esil.hoursWeekday" class="tnum mt-1 text-small text-espresso">
                 Пн–Пт 08:00–22:00
               </p>
@@ -458,7 +458,7 @@
                 пр. Абая 40
               </p>
 
-              <p data-i18n="info.hours" class="mt-4 text-small text-stone">Часы работы</p>
+              <p data-i18n="info.hours" class="mt-4 text-small text-espresso/75">Часы работы</p>
               <p data-i18n="addresses.saryarka.hours" class="tnum mt-1 text-small text-espresso">
                 Ежедневно 08:00–21:00
               </p>
@@ -511,7 +511,7 @@
                   <p data-i18n="addresses.esil.name" class="font-display font-semibold text-espresso">
                     Есильский район
                   </p>
-                  <p data-i18n="addresses.esil.street" class="text-small text-stone">
+                  <p data-i18n="addresses.esil.street" class="text-small text-espresso/75">
                     ул. Достык 12, ТЦ, первый этаж
                   </p>
                 </div>
@@ -522,7 +522,7 @@
                   >
                     Район Сарыарқа
                   </p>
-                  <p data-i18n="addresses.saryarka.street" class="text-small text-stone">
+                  <p data-i18n="addresses.saryarka.street" class="text-small text-espresso/75">
                     пр. Абая 40
                   </p>
                 </div>
@@ -543,7 +543,7 @@
               ></iframe>
             </div>
 
-            <p class="text-caption text-stone">
+            <p class="text-caption text-espresso/75">
               <a
                 href="https://www.openstreetmap.org/copyright"
                 target="_blank"
@@ -561,7 +561,7 @@
         <div class="grid gap-10 lg:grid-cols-12 lg:gap-x-12">
           <div class="lg:col-span-5">
             <h2 data-i18n="form.title" class="text-h3 text-espresso sm:text-h2">Написать нам</h2>
-            <p data-i18n="form.lead" class="measure mt-3 text-stone">
+            <p data-i18n="form.lead" class="measure mt-3 text-espresso/75">
               Вопрос, отзыв, идея для авторского напитка — пишите, читаем сами.
             </p>
 
@@ -618,7 +618,7 @@
                   aria-describedby="contact-reply-hint contact-reply-error"
                   class="mt-2 w-full rounded-md border border-stone/40 bg-white px-4 py-3 text-espresso transition-colors hover:border-stone aria-invalid:border-alert"
                 />
-                <p id="contact-reply-hint" data-i18n="form.contactHint" class="mt-2 text-caption text-stone">
+                <p id="contact-reply-hint" data-i18n="form.contactHint" class="mt-2 text-caption text-espresso/75">
                   Ответим тем же способом, каким вы напишете.
                 </p>
                 <p id="contact-reply-error" data-error="reply" hidden class="mt-2 text-small text-alert"></p>
@@ -829,7 +829,7 @@
               type="button"
               data-lang="ru"
               aria-pressed="true"
-              class="rounded-pill border border-milk/30 px-3 py-1.5 text-small font-medium text-milk transition-colors hover:border-milk aria-pressed:border-milk aria-pressed:bg-milk aria-pressed:text-espresso"
+              class="min-w-11 rounded-pill border border-milk/30 px-3 py-2.5 text-small font-medium text-milk transition-colors hover:border-milk aria-pressed:border-milk aria-pressed:bg-milk aria-pressed:text-espresso"
             >
               RU
             </button>
@@ -837,7 +837,7 @@
               type="button"
               data-lang="kk"
               aria-pressed="false"
-              class="rounded-pill border border-milk/30 px-3 py-1.5 text-small font-medium text-milk transition-colors hover:border-milk aria-pressed:border-milk aria-pressed:bg-milk aria-pressed:text-espresso"
+              class="min-w-11 rounded-pill border border-milk/30 px-3 py-2.5 text-small font-medium text-milk transition-colors hover:border-milk aria-pressed:border-milk aria-pressed:bg-milk aria-pressed:text-espresso"
             >
               ҚАЗ
             </button>
@@ -932,7 +932,7 @@
 
         <p
           data-i18n="cart.note"
-          class="border-t border-stone/20 px-6 py-5 text-small text-stone"
+          class="border-t border-stone/20 px-6 py-5 text-small text-espresso/75"
         >
           Оплата и доставка появятся позже. Пока просто приходите к нам.
         </p>
@@ -958,7 +958,7 @@
         type="button"
         data-filter
         aria-pressed="false"
-        class="shrink-0 rounded-pill border border-stone px-4 py-2 text-small font-medium whitespace-nowrap text-espresso transition-colors hover:border-cocoa aria-pressed:border-espresso aria-pressed:bg-espresso aria-pressed:text-white"
+        class="shrink-0 rounded-pill border border-stone px-4 py-2.5 text-small font-medium whitespace-nowrap text-espresso transition-colors hover:border-cocoa aria-pressed:border-espresso aria-pressed:bg-espresso aria-pressed:text-white"
       ></button>
     </template>
 
@@ -971,19 +971,19 @@
           class="absolute top-4 right-4 rounded-pill bg-cocoa px-2.5 py-1 text-caption font-medium text-white"
         ></p>
         <h3 data-name class="font-display text-lead font-semibold text-espresso"></h3>
-        <p data-desc class="mt-2 text-small text-stone"></p>
+        <p data-desc class="mt-2 text-small text-espresso/75"></p>
         <!-- Цена и кнопка всегда в столбик: при justify-between короткая цена
              («900 ₸») оставляла кнопку в строке, а длинная переносила её,
              и кнопки в соседних карточках оказывались на разной высоте. -->
         <div class="mt-auto flex flex-col items-start gap-4 pt-6">
           <p class="tnum flex items-baseline gap-2">
             <span data-price class="font-display text-h3 font-semibold text-caramel"></span>
-            <s data-old-price class="text-small text-stone"></s>
+            <s data-old-price class="text-small text-espresso/75"></s>
           </p>
           <button
             type="button"
             data-add
-            class="rounded-pill bg-espresso px-4 py-2.5 text-small font-medium text-milk transition-colors hover:bg-cocoa"
+            class="rounded-pill bg-espresso px-4 py-3 text-small font-medium text-milk transition-colors hover:bg-cocoa"
           ></button>
         </div>
       </article>
@@ -993,7 +993,7 @@
       <li class="flex items-start justify-between gap-4 border-b border-stone/15 py-4 last:border-0">
         <div class="min-w-0 pt-2.5">
           <p data-line-name class="text-espresso"></p>
-          <p data-line-unit class="tnum mt-1 text-caption text-stone"></p>
+          <p data-line-unit class="tnum mt-1 text-caption text-espresso/75"></p>
         </div>
 
         <div class="shrink-0">

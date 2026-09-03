@@ -20,13 +20,10 @@ export const locale = {
   ru: {
     meta: {
       title: 'DALA COFFEE — кофейня в Астане',
+      ogLocale: 'ru_RU',
       description:
         'DALA COFFEE — кофейня в Астане: классика, авторские напитки на местных ' +
         'вкусах и кофе с собой.',
-    },
-    brand: {
-      name: 'DALA COFFEE',
-      tagline: 'Кофейня в Астане',
     },
     nav: {
       menu: 'Меню',
@@ -36,11 +33,7 @@ export const locale = {
     },
     actions: {
       addToCart: 'В корзину',
-      more: 'Подробнее',
       allDrinks: 'Все напитки',
-      order: 'Заказать',
-      toTop: 'Наверх',
-      writeUs: 'Написать нам',
       send: 'Отправить',
       clear: 'Очистить',
     },
@@ -171,13 +164,10 @@ export const locale = {
   kk: {
     meta: {
       title: 'DALA COFFEE — Астанадағы кофехана',
+      ogLocale: 'kk_KZ',
       description:
         'DALA COFFEE — Астанадағы кофехана: классика, жергілікті дәмдері бар ' +
         'авторлық сусындар және өзіңізбен алатын кофе.',
-    },
-    brand: {
-      name: 'DALA COFFEE',
-      tagline: 'Астанадағы кофехана',
     },
     nav: {
       menu: 'Мәзір',
@@ -187,11 +177,7 @@ export const locale = {
     },
     actions: {
       addToCart: 'Себетке',
-      more: 'Толығырақ',
       allDrinks: 'Барлық сусындар',
-      order: 'Тапсырыс беру',
-      toTop: 'Жоғары',
-      writeUs: 'Бізге жазу',
       send: 'Жіберу',
       clear: 'Тазалау',
     },
@@ -288,7 +274,7 @@ export const locale = {
       statusSuccess: 'Рахмет, күн ішінде жауап береміз',
     },
     footer: {
-      navTitle: 'Навигация',
+      navTitle: 'Бөлімдер',
       contactsTitle: 'Байланыс',
       socialTitle: 'Әлеуметтік желілер',
       hours: 'Күн сайын 8:00-ден бастап',

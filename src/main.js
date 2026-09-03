@@ -53,7 +53,9 @@ function initLangSwitcher() {
     const lang = LANGS.find((item) => item.code === button.dataset.lang);
     if (!lang) continue;
     button.textContent = lang.short;
-    // Подпись для скринридера — на языке самой кнопки.
+    // Подпись для скринридера — на языке самой кнопки, поэтому рядом нужен
+    // lang: иначе синтезатор прочитает казахскую фразу русским голосом.
+    button.lang = lang.code;
     button.setAttribute('aria-label', locale[lang.code].a11y.switchTo);
   }
 

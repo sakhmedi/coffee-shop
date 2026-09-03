@@ -32,7 +32,11 @@
      а также заливки под белым текстом (белое на cocoa — 5.78:1). */
   --color-cocoa: #8c5a38;
   --color-blush: #f6e3de; /* фон акцентных блоков и промо */
-  --color-stone: #8a7466; /* второстепенный текст, бордеры, разделители */
+
+  /* ТОЛЬКО бордеры, разделители и заливки — не текст. На milk даёт 3.95:1,
+     на blush 3.56:1: для текста нужно 4.5:1, и мелкий текст на stone
+     аудит не проходит. Второстепенный текст пишем espresso/75 (6.5:1). */
+  --color-stone: #8a7466;
   --color-white: #ffffff;
 
   /* Приглушённый кирпичный — та же тёплая гамма, из палитры не выбивается.
@@ -212,7 +216,8 @@
   border-radius: var(--radius-sm);
   background-color: var(--color-espresso);
   color: var(--color-milk);
-  padding: 0.625rem 1rem;
+  /* Высота ссылки — те же 44 px, что и у остальных кнопок. */
+  padding: 0.75rem 1rem;
   font-size: var(--text-small);
   transition: top 150ms ease;
 
