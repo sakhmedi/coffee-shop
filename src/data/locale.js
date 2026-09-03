@@ -159,6 +159,9 @@ export const locale = {
       decrease: 'Убрать одну порцию, {name}',
       removeItem: 'Удалить из корзины, {name}',
       footerNav: 'Навигация по сайту',
+      // Дописывается к подписи ссылки, которая уводит на чужой сайт:
+      // иконки-стрелки для скринридера не существует.
+      newTab: ', откроется в новой вкладке',
       instagram: 'Мы в Instagram',
       telegram: 'Наш канал в Telegram',
       whatsapp: 'Написать в WhatsApp',
@@ -306,6 +309,7 @@ export const locale = {
       decrease: 'Бір порцияны азайту, {name}',
       removeItem: 'Себеттен алып тастау, {name}',
       footerNav: 'Сайт бойынша навигация',
+      newTab: ', жаңа қойындыда ашылады',
       instagram: 'Instagram-дағы парақшамыз',
       telegram: 'Telegram-дағы арнамыз',
       whatsapp: 'WhatsApp-қа жазу',

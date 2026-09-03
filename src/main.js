@@ -5,6 +5,7 @@ import { initMenuSection } from './ui/menu.js';
 import { initWeekly } from './ui/weekly.js';
 import { initCartPanel } from './ui/cart-panel.js';
 import { initContactForm } from './ui/contact-form.js';
+import { initMap } from './ui/map.js';
 
 const DESKTOP_QUERY = '(min-width: 64rem)'; /* совпадает с брейкпоинтом lg */
 
@@ -147,6 +148,7 @@ initLangSwitcher();
 const mobileMenu = initMobileMenu();
 initMenuSection();
 initWeekly();
+initMap();
 initContactForm();
 // Корзина открывается поверх всего, поэтому мобильное меню перед ней закрываем.
 initCartPanel({ onBeforeOpen: () => mobileMenu?.close() });

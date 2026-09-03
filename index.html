@@ -428,7 +428,8 @@
                 rel="noopener noreferrer"
                 class="mt-5 inline-flex items-center gap-2 rounded-pill border border-espresso/30 px-4 py-2.5 text-small font-medium text-espresso no-underline transition-colors hover:border-espresso hover:bg-espresso/5"
               >
-                <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span>
+                <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span
+                ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span>
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -477,7 +478,8 @@
                 rel="noopener noreferrer"
                 class="mt-5 inline-flex items-center gap-2 rounded-pill border border-espresso/30 px-4 py-2.5 text-small font-medium text-espresso no-underline transition-colors hover:border-espresso hover:bg-espresso/5"
               >
-                <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span>
+                <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span
+                ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span>
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -526,15 +528,17 @@
                 </div>
               </div>
 
-              <!-- Пока карта не загрузилась, iframe прозрачен и не ловит
-                   клики — под ним виден блок с адресами. -->
+              <!-- Пока карта не подтверждена, iframe прозрачен и не ловит
+                   клики — под ним виден блок с адресами. Атрибут data-loaded
+                   ставит ui/map.js: событию load фрейма тут верить нельзя,
+                   почему — написано там. -->
               <iframe
+                data-map
                 title="Карта Астаны: районы, где мы работаем"
                 data-i18n-title="addresses.mapTitle"
                 src="https://www.openstreetmap.org/export/embed.html?bbox=71.36%2C51.09%2C71.60%2C51.22&amp;layer=mapnik"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
-                onload="this.dataset.loaded = 'true'"
                 class="pointer-events-none absolute inset-0 h-full w-full border-0 opacity-0 transition-opacity duration-300 data-[loaded=true]:pointer-events-auto data-[loaded=true]:opacity-100"
               ></iframe>
             </div>
@@ -544,8 +548,8 @@
                 href="https://www.openstreetmap.org/copyright"
                 target="_blank"
                 rel="noopener noreferrer"
-                data-i18n="addresses.mapCredit"
-                >Карта: © участники OpenStreetMap</a
+                ><span data-i18n="addresses.mapCredit">Карта: © участники OpenStreetMap</span
+                ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span></a
               >
             </p>
           </div>
@@ -734,8 +738,6 @@
                   href="https://www.instagram.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-i18n-aria-label="a11y.instagram"
-                  aria-label="Мы в Instagram"
                   class="grid h-11 w-11 place-items-center rounded-pill border border-milk/25 text-milk no-underline transition-colors hover:border-milk hover:bg-milk/10"
                 >
                   <svg
@@ -750,6 +752,11 @@
                     <circle cx="12" cy="12" r="4" />
                     <circle cx="17.1" cy="6.9" r="1.05" fill="currentColor" stroke="none" />
                   </svg>
+                  <!-- Имя ссылки собирается из текста, а не из aria-label:
+                       иначе хвост про новую вкладку пришлось бы дублировать
+                       в каждой подписи словаря. -->
+                  <span class="sr-only" data-i18n="a11y.instagram">Мы в Instagram</span
+                  ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span>
                 </a>
               </li>
               <li>
@@ -757,8 +764,6 @@
                   href="https://t.me/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-i18n-aria-label="a11y.telegram"
-                  aria-label="Наш канал в Telegram"
                   class="grid h-11 w-11 place-items-center rounded-pill border border-milk/25 text-milk no-underline transition-colors hover:border-milk hover:bg-milk/10"
                 >
                   <svg
@@ -773,6 +778,8 @@
                     <path d="M21.4 4.3 2.9 11.4a.5.5 0 0 0 0 .9l4.5 1.6 1.7 5.1a.5.5 0 0 0 .9.2l2.4-2.7 4.3 3.1a.5.5 0 0 0 .8-.3l3.6-14.2a.5.5 0 0 0-.7-.8Z" />
                     <path d="m7.4 13.9 11.1-8" />
                   </svg>
+                  <span class="sr-only" data-i18n="a11y.telegram">Наш канал в Telegram</span
+                  ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span>
                 </a>
               </li>
               <li>
@@ -780,8 +787,6 @@
                   href="https://wa.me/77001234567"
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-i18n-aria-label="a11y.whatsapp"
-                  aria-label="Написать в WhatsApp"
                   class="grid h-11 w-11 place-items-center rounded-pill border border-milk/25 text-milk no-underline transition-colors hover:border-milk hover:bg-milk/10"
                 >
                   <svg
@@ -796,6 +801,8 @@
                     <path d="M12 3.6a8.4 8.4 0 0 0-7.2 12.7l-1.2 4.1 4.3-1.1A8.4 8.4 0 1 0 12 3.6Z" />
                     <path d="M9.4 8.1c.2 1.5.9 2.9 2 4s2.5 1.8 4 2l.9-1.7-2-1-.9.8a6 6 0 0 1-2.1-2.1l.8-.9-1-2-1.7.9Z" />
                   </svg>
+                  <span class="sr-only" data-i18n="a11y.whatsapp">Написать в WhatsApp</span
+                  ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span>
                 </a>
               </li>
             </ul>
