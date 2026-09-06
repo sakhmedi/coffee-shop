@@ -442,171 +442,151 @@
           </p>
         </div>
 
-        <div class="mt-8 grid gap-4 lg:grid-cols-12 lg:gap-6">
-          <div class="grid gap-4 lg:col-span-5">
-            <article
-              class="rounded-md border border-stone/20 p-6 transition-colors hover:border-espresso/35"
+        <!-- Обёртка нужна, чтобы при сбое спрятать карту вместе с атрибуцией:
+             подпись без карты бессмысленна. Прячет её ui/map.js. -->
+        <div data-map-wrap class="mt-8">
+          <!-- aria-hidden, а не role="img": всё, что есть на карте, лежит
+               текстом в карточках ниже, и озвучивать картинку второй раз
+               незачем. Фокусируемых элементов внутри Leaflet не оставляет
+               (см. ui/map.js), поэтому табуляция сюда не проваливается.
+               isolate запирает z-index слоёв Leaflet (400-700) внутри
+               контейнера, иначе карта всплыла бы поверх фиксированной шапки. -->
+          <div
+            data-map
+            aria-hidden="true"
+            class="isolate aspect-4/3 overflow-hidden rounded-lg border border-stone/20 bg-milk md:aspect-2/1"
+          ></div>
+
+          <!-- Атрибуция вынесена из контейнера наружу: внутри aria-hidden
+               её ссылки были бы недоступны и скринридеру, и клавиатуре. -->
+          <p class="mt-2 text-caption text-espresso/75">
+            <span data-i18n="addresses.mapCredit">Карта:</span>
+            <a
+              href="https://www.esri.com/en-us/legal/terms/full-master-agreement"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><span data-i18n="addresses.mapEsri">© Esri</span
+              ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span></a
+            >,
+            <a
+              href="https://www.openstreetmap.org/copyright"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><span data-i18n="addresses.mapOsm">© участники OpenStreetMap</span
+              ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span></a
             >
-              <h3
-                data-i18n="addresses.esil.name"
-                class="font-display text-lead font-semibold text-espresso"
-              >
-                Есильский район
-              </h3>
-              <p data-i18n="addresses.esil.street" class="mt-2 text-espresso">
-                ул. Достык 12, ТЦ, первый этаж
-              </p>
+          </p>
+        </div>
 
-              <p data-i18n="info.hours" class="mt-4 text-small text-espresso/75">Часы работы</p>
-              <p data-i18n="addresses.esil.hoursWeekday" class="tnum mt-1 text-small text-espresso">
-                Пн–Пт 08:00–22:00
-              </p>
-              <p data-i18n="addresses.esil.hoursWeekend" class="tnum text-small text-espresso">
-                Сб–Вс 09:00–23:00
-              </p>
-
-              <p class="mt-4">
-                <a
-                  href="tel:+77001234567"
-                  data-i18n="contacts.phone"
-                  class="tnum text-small text-cocoa"
-                  >+7 700 123 45 67</a
-                >
-              </p>
-
-              <!-- Внешняя ссылка: подпись в отдельном span, иначе data-i18n
-                   затрёт вместе с текстом и иконку. -->
-              <a
-                href="https://2gis.kz/astana/search/Достык%2012"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="mt-5 inline-flex items-center gap-2 rounded-pill border border-espresso/30 px-4 py-2.5 text-small font-medium text-espresso no-underline transition-colors hover:border-espresso hover:bg-espresso/5"
-              >
-                <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span
-                ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span>
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-4 w-4"
-                >
-                  <path d="M9 15 15 9M10 9h5v5" />
-                </svg>
-              </a>
-            </article>
-
-            <article
-              class="rounded-md border border-stone/20 p-6 transition-colors hover:border-espresso/35"
+        <!-- Адреса текстом: основной способ их узнать, а не запасной. Видны
+             всегда, карта им ничего не добавляет, кроме расположения. -->
+        <div class="mt-8 grid gap-4 sm:grid-cols-2">
+          <article
+            class="rounded-md border border-stone/20 p-6 transition-colors hover:border-espresso/35"
+          >
+            <h3
+              data-i18n="addresses.nurAlem.name"
+              class="font-display text-lead font-semibold text-espresso"
             >
-              <h3
-                data-i18n="addresses.saryarka.name"
-                class="font-display text-lead font-semibold text-espresso"
-              >
-                Район Сарыарқа
-              </h3>
-              <p data-i18n="addresses.saryarka.street" class="mt-2 text-espresso">
-                пр. Абая 40
-              </p>
+              Nur Alem, шар на ЭКСПО
+            </h3>
+            <p data-i18n="addresses.nurAlem.street" class="mt-2 text-espresso">
+              пр. Мәңгілік Ел, 55
+            </p>
 
-              <p data-i18n="info.hours" class="mt-4 text-small text-espresso/75">Часы работы</p>
-              <p data-i18n="addresses.saryarka.hours" class="tnum mt-1 text-small text-espresso">
-                Ежедневно 08:00–21:00
-              </p>
+            <p data-i18n="info.hours" class="mt-4 text-small text-espresso/75">Часы работы</p>
+            <p data-i18n="addresses.nurAlem.hours" class="tnum mt-1 text-small text-espresso">
+              Ежедневно 08:00–22:00
+            </p>
 
-              <p class="mt-4">
-                <a
-                  href="tel:+77001234567"
-                  data-i18n="contacts.phone"
-                  class="tnum text-small text-cocoa"
-                  >+7 700 123 45 67</a
-                >
-              </p>
-
+            <p class="mt-4">
               <a
-                href="https://2gis.kz/astana/search/Абая%2040"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="mt-5 inline-flex items-center gap-2 rounded-pill border border-espresso/30 px-4 py-2.5 text-small font-medium text-espresso no-underline transition-colors hover:border-espresso hover:bg-espresso/5"
-              >
-                <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span
-                ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span>
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-4 w-4"
-                >
-                  <path d="M9 15 15 9M10 9h5v5" />
-                </svg>
-              </a>
-            </article>
-          </div>
-
-          <div class="flex flex-col gap-2 lg:col-span-7">
-            <div
-              class="relative aspect-4/3 overflow-hidden rounded-lg border border-stone/20 lg:aspect-auto lg:flex-1"
-            >
-              <!-- Запасной блок лежит под iframe и виден, пока карта не
-                   загрузилась. Для скринридера он скрыт: те же адреса уже
-                   прочитаны в карточках слева, дубль только мешает. -->
-              <div
-                aria-hidden="true"
-                class="absolute inset-0 flex flex-col justify-center gap-5 bg-milk p-6"
-              >
-                <div>
-                  <p data-i18n="addresses.esil.name" class="font-display font-semibold text-espresso">
-                    Есильский район
-                  </p>
-                  <p data-i18n="addresses.esil.street" class="text-small text-espresso/75">
-                    ул. Достык 12, ТЦ, первый этаж
-                  </p>
-                </div>
-                <div>
-                  <p
-                    data-i18n="addresses.saryarka.name"
-                    class="font-display font-semibold text-espresso"
-                  >
-                    Район Сарыарқа
-                  </p>
-                  <p data-i18n="addresses.saryarka.street" class="text-small text-espresso/75">
-                    пр. Абая 40
-                  </p>
-                </div>
-              </div>
-
-              <!-- Пока карта не подтверждена, iframe прозрачен и не ловит
-                   клики — под ним виден блок с адресами. Атрибут data-loaded
-                   ставит ui/map.js: событию load фрейма тут верить нельзя,
-                   почему — написано там. -->
-              <iframe
-                data-map
-                title="Карта Астаны: районы, где мы работаем"
-                data-i18n-title="addresses.mapTitle"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=71.36%2C51.09%2C71.60%2C51.22&amp;layer=mapnik"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                class="pointer-events-none absolute inset-0 h-full w-full border-0 opacity-0 transition-opacity duration-300 data-[loaded=true]:pointer-events-auto data-[loaded=true]:opacity-100"
-              ></iframe>
-            </div>
-
-            <p class="text-caption text-espresso/75">
-              <a
-                href="https://www.openstreetmap.org/copyright"
-                target="_blank"
-                rel="noopener noreferrer"
-                ><span data-i18n="addresses.mapCredit">Карта: © участники OpenStreetMap</span
-                ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span></a
+                href="tel:+77777777777"
+                data-i18n="contacts.phone"
+                class="tnum text-small text-cocoa"
+                >+7 777 777 77 77</a
               >
             </p>
-          </div>
+
+            <!-- Внешняя ссылка: подпись в отдельном span, иначе data-i18n
+                 затрёт вместе с текстом и иконку. В 2ГИС уходим координатами,
+                 а не строкой адреса: у парка адреса просто нет. -->
+            <a
+              href="https://2gis.kz/astana/search/51.0906103%2C71.424228"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-5 inline-flex items-center gap-2 rounded-pill border border-espresso/30 px-4 py-2.5 text-small font-medium text-espresso no-underline transition-colors hover:border-espresso hover:bg-espresso/5"
+            >
+              <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span
+              ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4"
+              >
+                <path d="M9 15 15 9M10 9h5v5" />
+              </svg>
+            </a>
+          </article>
+
+          <article
+            class="rounded-md border border-stone/20 p-6 transition-colors hover:border-espresso/35"
+          >
+            <h3
+              data-i18n="addresses.centralPark.name"
+              class="font-display text-lead font-semibold text-espresso"
+            >
+              Центральный парк
+            </h3>
+            <p data-i18n="addresses.centralPark.street" class="mt-2 text-espresso">
+              пр. Жеңіс, 1
+            </p>
+
+            <p data-i18n="info.hours" class="mt-4 text-small text-espresso/75">Часы работы</p>
+            <p data-i18n="addresses.centralPark.hours" class="tnum mt-1 text-small text-espresso">
+              Ежедневно 09:00–21:00
+            </p>
+
+            <p class="mt-4">
+              <a
+                href="tel:+77777777777"
+                data-i18n="contacts.phone"
+                class="tnum text-small text-cocoa"
+                >+7 777 777 77 77</a
+              >
+            </p>
+
+            <!-- Внешняя ссылка: подпись в отдельном span, иначе data-i18n
+                 затрёт вместе с текстом и иконку. Координаты те же, что
+                 у маркера в data/places.js: разъедься они — кнопка открывала бы
+                 не ту точку, что показана на карте. -->
+            <a
+              href="https://2gis.kz/astana/search/51.15995%2C71.415257"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-5 inline-flex items-center gap-2 rounded-pill border border-espresso/30 px-4 py-2.5 text-small font-medium text-espresso no-underline transition-colors hover:border-espresso hover:bg-espresso/5"
+            >
+              <span data-i18n="addresses.openIn2gis">Открыть в 2ГИС</span
+              ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4"
+              >
+                <path d="M9 15 15 9M10 9h5v5" />
+              </svg>
+            </a>
+          </article>
         </div>
       </section>
 
@@ -1064,6 +1044,29 @@
     </div>
 
     <!-- ==================== ШАБЛОНЫ ДЛЯ JS ==================== -->
+    <!-- Булавка маркера. Цвета через var(): токены из @theme static доступны
+         как обычные CSS-переменные, а Leaflet кладёт этот узел в свой слой,
+         куда классы Tailwind из шаблона доезжают как есть. -->
+    <template data-template="map-marker">
+      <svg viewBox="0 0 26 34" width="26" height="34" aria-hidden="true">
+        <path
+          d="M13 0C5.8 0 0 5.8 0 13c0 9.1 13 21 13 21s13-11.9 13-21C26 5.8 20.2 0 13 0Z"
+          fill="var(--color-espresso)"
+        />
+        <circle cx="13" cy="12.6" r="4.6" fill="var(--color-milk)" />
+      </svg>
+    </template>
+
+    <!-- Содержимое всплывашки маркера. Заполняет ui/map.js на текущем языке
+         и перезаписывает при переключении. -->
+    <template data-template="map-popup">
+      <div class="font-sans">
+        <p data-popup-name class="font-display text-body font-semibold text-espresso"></p>
+        <p data-popup-street class="mt-1 text-small text-espresso/75"></p>
+        <p data-popup-hours class="tnum mt-1 text-small text-espresso"></p>
+      </div>
+    </template>
+
     <template data-template="filter-button">
       <button
         type="button"

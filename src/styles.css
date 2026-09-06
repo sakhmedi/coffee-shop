@@ -231,6 +231,53 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* --- Leaflet ---------------------------------------------------------
+   Библиотека приносит свои цвета: серый фон под тайлами, белую всплывашку
+   с холодной тенью и синие ссылки в кнопках зума. Всё это выбивается
+   из палитры, поэтому переопределяем. Больше в её стили не лезем.
+
+   Пишем обычным css, а не утилитами: классы на эти узлы вешать неоткуда,
+   их создаёт библиотека.
+
+   Каждый селектор привязан к [data-map] не для области видимости, а ради
+   веса. Css Leaflet приезжает динамическим import'ом уже после нашего
+   и оказывается ниже в <head>, поэтому при равной специфичности выигрывает
+   он. Два класса против одного решают спор в нашу пользу. */
+[data-map].leaflet-container {
+  /* По умолчанию #ddd — серая коробка на время загрузки тайлов. */
+  background-color: var(--color-milk);
+  font-family: var(--font-sans);
+}
+
+[data-map] .leaflet-popup-content-wrapper,
+[data-map] .leaflet-popup-tip {
+  border-radius: var(--radius-md);
+  background-color: var(--color-milk);
+  color: var(--color-espresso);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--color-espresso) 18%, transparent);
+}
+
+[data-map] .leaflet-popup-content {
+  margin: 0.875rem 1rem;
+}
+
+[data-map] .leaflet-control-zoom a {
+  border-radius: var(--radius-xs);
+  background-color: var(--color-milk);
+  color: var(--color-espresso);
+}
+
+[data-map] .leaflet-control-zoom a:hover {
+  background-color: var(--color-blush);
+  color: var(--color-espresso);
+}
+
+/* Рамка вокруг блока кнопок зума у Leaflet тоже холодная. */
+[data-map] .leaflet-bar {
+  border-color: color-mix(in srgb, var(--color-espresso) 20%, transparent);
+  box-shadow: none;
+}
+
 /* Ссылка «перейти к содержимому» для клавиатуры. */
 @utility skip-link {
   position: absolute;
