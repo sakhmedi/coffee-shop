@@ -633,10 +633,14 @@
             </ul>
           </div>
 
-          <!-- Бэкенда нет: submit обрабатывается на клиенте, novalidate снимает
-               встроенные подсказки браузера — они не переводятся вместе
-               с интерфейсом и звучат не нашим голосом. -->
-          <form data-contact-form novalidate class="lg:col-span-6 lg:col-start-7">
+          <!-- Отправка идёт в Formspree из ui/contact-form.js, поэтому action
+               у формы нет: без JS отправлять нечем, и уводить человека
+               на чужую страницу с ответом сервиса мы не хотим. novalidate
+               снимает встроенные подсказки браузера — они не переводятся
+               вместе с интерфейсом и звучат не нашим голосом.
+               relative нужен ловушке для ботов ниже: она позиционируется
+               абсолютно и без этого зацепилась бы за секцию. -->
+          <form data-contact-form novalidate class="relative lg:col-span-6 lg:col-start-7">
             <div class="grid gap-5">
               <div>
                 <label
@@ -664,18 +668,22 @@
                   class="block text-small font-medium text-espresso"
                   >Телефон или почта</label
                 >
+                <!-- name="contact", а не "email": поле принимает и телефон,
+                     и почту, а Formspree подставляет в reply-to письма именно
+                     поле с именем email. Телефон в reply-to сделал бы ответ
+                     на письмо невозможным. -->
                 <input
                   id="contact-reply"
-                  name="reply"
+                  name="contact"
                   type="text"
-                  data-field="reply"
+                  data-field="contact"
                   aria-describedby="contact-reply-hint contact-reply-error"
                   class="mt-2 w-full rounded-md border border-stone/40 bg-white px-4 py-3 text-espresso transition-colors hover:border-stone aria-invalid:border-alert"
                 />
                 <p id="contact-reply-hint" data-i18n="form.contactHint" class="mt-2 text-caption text-espresso/75">
                   Ответим тем же способом, каким вы напишете.
                 </p>
-                <p id="contact-reply-error" data-error="reply" hidden class="mt-2 text-small text-alert"></p>
+                <p id="contact-reply-error" data-error="contact" hidden class="mt-2 text-small text-alert"></p>
               </div>
 
               <div>
@@ -697,14 +705,32 @@
               </div>
             </div>
 
+            <!-- Ловушка для спам-ботов: Formspree молча отбрасывает отправку,
+                 если поле _gotcha заполнено. Человек его не видит и не может
+                 в него попасть — нулевой размер вместо hidden (по display:none
+                 часть ботов такие поля пропускает), tabindex="-1" убирает
+                 из порядка фокуса, aria-hidden — из дерева доступности.
+                 autocomplete="off" обязателен: автозаполнение браузера
+                 подставило бы значение и забраковало живого человека. -->
+            <div class="absolute h-0 w-0 overflow-hidden" aria-hidden="true">
+              <input
+                id="contact-gotcha"
+                name="_gotcha"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+
             <!-- Регион состояния живёт в разметке с самого начала и никогда
                  не прячется через hidden: спрятанный aria-live ничего
                  не объявит. Пустым он просто не занимает высоты. -->
             <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
               <button
                 type="submit"
+                data-form-submit
                 data-i18n="actions.send"
-                class="rounded-pill bg-espresso px-6 py-3.5 font-medium text-milk transition-colors hover:bg-cocoa"
+                class="rounded-pill bg-espresso px-6 py-3.5 font-medium text-milk transition-colors hover:bg-cocoa disabled:opacity-70"
               >
                 Отправить
               </button>

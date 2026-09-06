@@ -1,16 +1,24 @@
 /**
  * Форма «Написать нам».
  *
- * Бэкенда нет: submit обрабатывается здесь, никуда ничего не уходит,
- * при успехе форма просто очищается. Встроенную валидацию браузера
- * отключает novalidate в разметке — её подсказки не переводятся вместе
+ * Своего бэкенда нет: письма принимает Formspree. Валидация всё равно идёт
+ * первой — запрос уходит, только если поля прошли проверку, иначе мы бы
+ * тратили лимит сервиса на заведомый мусор. Встроенную валидацию браузера
+ * отключает novalidate в разметке: её подсказки не переводятся вместе
  * с интерфейсом и звучат не нашим голосом.
  *
- * В состоянии храним КЛЮЧИ ошибок, а не готовые строки: иначе при
- * переключении языка на экране остались бы русские сообщения.
+ * ЛИМИТ: бесплатный тариф Formspree — 50 писем в месяц на всю форму.
+ * Пятьдесят первое письмо сервис не примет, и человек увидит сообщение
+ * о неудачной отправке. Если поток вырастет, тариф нужно поднимать
+ * или переносить приём на свой обработчик.
+ *
+ * В состоянии храним КЛЮЧИ ошибок и статусов, а не готовые строки: иначе
+ * при переключении языка на экране остались бы русские сообщения.
  */
 
 import { onLangChange, t } from '../i18n.js';
+
+const ENDPOINT = 'https://formspree.io/f/xppzjgzo';
 
 /** Достаточно, чтобы отсечь опечатку, и не настолько строго, чтобы врать. */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -23,6 +31,7 @@ const MAX_PHONE_DIGITS = 15;
 
 const SUCCESS_KEY = 'form.statusSuccess';
 const ERROR_KEY = 'form.statusError';
+const NETWORK_KEY = 'form.statusNetwork';
 
 /** @returns {string|null} ключ ошибки или null, если поле в порядке */
 function checkName(value) {
@@ -31,9 +40,11 @@ function checkName(value) {
 
 /**
  * Одно поле на телефон и почту: человеку не нужно выбирать, каким
- * способом с ним связаться, — он пишет то, что помнит.
+ * способом с ним связаться, — он пишет то, что помнит. В Formspree оно
+ * уходит под именем contact, а не email: полю email сервис назначает
+ * reply-to письма, и телефон в этой роли всё ломает.
  */
-function checkReply(value) {
+function checkContact(value) {
   const raw = value.trim();
   if (!raw) return 'form.errors.contactEmpty';
 
@@ -60,7 +71,7 @@ function checkMessage(value) {
 
 const CHECKS = {
   name: checkName,
-  reply: checkReply,
+  contact: checkContact,
   message: checkMessage,
 };
 
@@ -69,13 +80,15 @@ export function initContactForm() {
   if (!form) return;
 
   const statusEl = form.querySelector('[data-form-status]');
+  const submitEl = form.querySelector('[data-form-submit]');
   const fields = [...form.querySelectorAll('[data-field]')];
-  if (!statusEl || fields.length === 0) return;
+  if (!statusEl || !submitEl || fields.length === 0) return;
 
   /** @type {Map<string, string>} имя поля → ключ ошибки */
   const errors = new Map();
   /** @type {string|null} */
   let statusKey = null;
+  let isSending = false;
 
   const validate = (field) => CHECKS[field.dataset.field]?.(field.value) ?? null;
 
@@ -94,8 +107,11 @@ export function initContactForm() {
   };
 
   const renderStatus = () => {
-    statusEl.textContent = statusKey ? t(statusKey) : '';
+    // Адрес подставляем из словаря, а не пишем в строку сообщения: почта
+    // уже есть в contacts.email, и менять её в двух местах никто не вспомнит.
+    statusEl.textContent = statusKey ? t(statusKey, { email: t('contacts.email') }) : '';
     if (!statusKey) delete statusEl.dataset.state;
+    // Всё, кроме «спасибо», — состояние error, то есть цвет alert.
     else statusEl.dataset.state = statusKey === SUCCESS_KEY ? 'ok' : 'error';
   };
 
@@ -104,8 +120,22 @@ export function initContactForm() {
     renderStatus();
   };
 
-  form.addEventListener('submit', (event) => {
+  /** Подпись кнопки зависит от того, летит ли сейчас запрос. */
+  const renderSubmit = () => {
+    submitEl.disabled = isSending;
+    submitEl.textContent = t(isSending ? 'actions.sending' : 'actions.send');
+  };
+
+  const setSending = (value) => {
+    isSending = value;
+    renderSubmit();
+  };
+
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    // Кнопка на время запроса disabled, но форму можно отправить и Enter'ом
+    // из поля — второй заслон от двойной отправки нужен здесь.
+    if (isSending) return;
 
     errors.clear();
     for (const field of fields) {
@@ -119,6 +149,44 @@ export function initContactForm() {
       // Фокус на первое поле с ошибкой: его сообщение прочитается
       // из aria-describedby, и сразу видно, куда смотреть.
       fields.find((field) => errors.has(field.dataset.field))?.focus();
+      return;
+    }
+
+    // Старый статус убираем до запроса: «спасибо» от прошлой отправки,
+    // висящее рядом с «Отправляем», читается как ответ на новую.
+    setStatus(null);
+
+    let delivered = false;
+    try {
+      setSending(true);
+
+      // Тело собираем из FormData: имена берутся из name= в разметке,
+      // так что контракт с Formspree виден прямо в HTML. Сюда же попадает
+      // ловушка _gotcha — по ней сервис молча отбрасывает ботов.
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+
+      // Formspree отвечает 4xx на исчерпанный лимит, выключенную форму
+      // и заблокированную отправку — для человека это та же неудача,
+      // что и оборванная сеть.
+      delivered = response.ok;
+    } catch {
+      // Сеть не ответила: fetch отклоняется до всякого статуса.
+      delivered = false;
+    } finally {
+      setSending(false);
+    }
+
+    if (!delivered) {
+      // Поля НЕ чистим: набранный текст — единственная копия сообщения,
+      // и заставлять писать заново из-за нашей неудачи нельзя.
+      setStatus(NETWORK_KEY);
       return;
     }
 
@@ -147,5 +215,8 @@ export function initContactForm() {
   onLangChange(() => {
     for (const field of fields) renderField(field);
     renderStatus();
+    // translateTree уже вернул кнопке «Отправить» по data-i18n — если запрос
+    // ещё летит, возвращаем «Отправляем» поверх перевода.
+    renderSubmit();
   });
 }
