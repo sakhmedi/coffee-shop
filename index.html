@@ -26,12 +26,20 @@
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
-    <!-- Unbounded — заголовки, Inter — текст. Оба с кириллицей и ә ғ қ ң ө ұ ү һ і. -->
+    <!-- Onest — заголовки, Inter — текст. Оба с кириллицей и ә ғ қ ң ө ұ ү һ і.
+         Unbounded — только латиница: логотип и казахский h1 первого экрана.
+         Кириллицу ему не даём: cyrillic-ext у него весит 1036 байт и не содержит
+         ни одной буквы, а latin-ext — настоящий, 586 глифов вместе с ǵ (U+01F5).
+         Браузер выбирает подмножество по unicode-range, поэтому кириллические
+         файлы Unbounded не скачиваются: на странице нет кириллицы на --font-wide.
+         Вес только 700 — единственный, который используется (логотип и h1 оба
+         font-bold). На запрос 600;700 Google отдаёт вариативный файл на оба веса
+         и это стоит 169 КБ вместо 71 КБ. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Unbounded:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Onest:wght@600;700&family=Unbounded:wght@700&display=swap"
     />
 
     <link rel="stylesheet" href="/src/styles.css" />
@@ -55,7 +63,7 @@
           href="#hero"
           data-i18n-aria-label="a11y.toHome"
           aria-label="DALA COFFEE, наверх страницы"
-          class="justify-self-start py-1.5 whitespace-nowrap font-display text-small font-bold tracking-tight text-espresso no-underline sm:text-body md:text-lead"
+          class="justify-self-start py-1.5 whitespace-nowrap font-wide text-small font-bold tracking-tight text-espresso no-underline sm:text-body md:text-lead"
         >
           <!-- Уже 375 px «DALA COFFEE» + переключатель языка + корзина +
                бургер в строку не помещаются. Ниже этой ширины оставляем
@@ -210,11 +218,16 @@
     <main id="main">
       <!-- ==================== HERO ==================== -->
       <section id="hero" class="shell pt-28 pb-14 md:pt-36 md:pb-20 lg:pt-44">
-        <h1
-          data-i18n="hero.title"
-          class="text-h3 font-bold tracking-[-0.03em] text-espresso sm:text-h2 lg:text-h1"
-        >
-          Кофе в центре степи
+        <!-- В казахской версии заголовок показывается латиницей, а читается
+             кириллицей: видимый слой закрыт aria-hidden, рядом sr-only с тем
+             же ключом hero.title. Оба span'а наполняет translateTree; латиницу
+             поверх видимого кладёт ui/hero.js и только при lang=kk, поэтому
+             русская версия остаётся кириллической без единой строчки JS. -->
+        <h1 class="text-h3 font-bold tracking-[-0.03em] text-espresso sm:text-h2 lg:text-h1">
+          <span class="sr-only" data-i18n="hero.title">Кофе в центре степи</span>
+          <span data-hero-title aria-hidden="true" data-i18n="hero.title"
+            >Кофе в центре степи</span
+          >
         </h1>
 
         <div class="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-x-12">

@@ -1,6 +1,7 @@
 import { LANGS, locale } from './data/locale.js';
 import { initI18n, applyLang, getLang, onLangChange, t } from './i18n.js';
 import { initCart } from './cart.js';
+import { initHero } from './ui/hero.js';
 import { initMenuSection } from './ui/menu.js';
 import { initWeekly } from './ui/weekly.js';
 import { initCartPanel } from './ui/cart-panel.js';
@@ -148,6 +149,7 @@ initCart();
 initHeader();
 initLangSwitcher();
 const mobileMenu = initMobileMenu();
+initHero();
 initMenuSection();
 initWeekly();
 initMap();
