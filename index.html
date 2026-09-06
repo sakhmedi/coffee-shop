@@ -26,12 +26,22 @@
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
-    <!-- Onest — заголовки, Inter — текст. Оба с кириллицей и ә ғ қ ң ө ұ ү һ і.
-         Unbounded — только латиница: логотип и казахский h1 первого экрана.
-         Кириллицу ему не даём: cyrillic-ext у него весит 1036 байт и не содержит
-         ни одной буквы, а latin-ext — настоящий, 586 глифов вместе с ǵ (U+01F5).
-         Браузер выбирает подмножество по unicode-range, поэтому кириллические
-         файлы Unbounded не скачиваются: на странице нет кириллицы на --font-wide.
+    <!-- Onest — остальные заголовки, Inter — текст. Оба с кириллицей и ә ғ қ ң ө ұ ү һ і.
+         Unbounded — логотип и h1 первого экрана на обоих языках.
+
+         Подмножества у Unbounded разного качества, и это решает, что ему можно
+         давать. latin-ext настоящий (49 924 байта, 586 глифов, ǵ U+01F5 на месте),
+         cyrillic тоже настоящий — 12 812 байт и 98 букв, вся строка «Кофе в центре
+         степи» проверена по cmap пофайлово. А cyrillic-ext — заглушка: 1036 байт,
+         в которых только пробел, nbsp, A, Á, Ă и ₴. Восемь казахских букв из девяти
+         (ә ғ қ ң ө ұ ү һ) лежат именно там, поэтому казахский заголовок показываем
+         латиницей, а не кириллицей.
+
+         Убрать cyrillic-ext из ссылки нельзя: css2 игнорирует subset= и всё равно
+         отдаёт все пять блоков. Этого и не требуется — браузер выбирает файл по
+         unicode-range, а символов U+0460–052F на --font-wide на странице нет, так
+         что заглушка не скачивается (проверено: 0 байт).
+
          Вес только 700 — единственный, который используется (логотип и h1 оба
          font-bold). На запрос 600;700 Google отдаёт вариативный файл на оба веса
          и это стоит 169 КБ вместо 71 КБ. -->
@@ -97,30 +107,63 @@
         </div>
 
         <div class="flex items-center gap-1.5 justify-self-end sm:gap-2 md:gap-3">
-          <!-- Переключатель языка: виден на всех ширинах, в бургер не прячется. -->
-          <div
-            data-lang-switcher
-            role="group"
-            data-i18n-aria-label="a11y.langSwitcher"
-            aria-label="Выбор языка"
-            class="flex items-center gap-1.5"
-          >
+          <!-- Переключатель языка: виден на всех ширинах, в бургер не прячется.
+               Одна кнопка с кодом текущего языка вместо кнопки на каждый язык —
+               в тесной строке шапки на 375 это экономит ~30 px, и третий язык
+               её уже не сломает. Подписи пунктов, aria-current и клавиатуру
+               берёт на себя ui/lang-menu.js. -->
+          <div data-lang-menu class="relative">
             <button
               type="button"
-              data-lang="ru"
-              aria-pressed="true"
-              class="min-w-11 rounded-pill border border-stone px-2 py-2.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-cocoa aria-pressed:bg-cocoa aria-pressed:text-white sm:px-3"
+              id="lang-menu-header-button"
+              data-lang-menu-toggle
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="lang-menu-header"
+              data-i18n-aria-label="a11y.langSwitcher"
+              aria-label="Выбор языка"
+              class="flex h-11 items-center gap-1.5 rounded-pill border border-stone px-2.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-expanded:border-cocoa sm:px-3"
             >
-              RU
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                class="h-5 w-5"
+              >
+                <circle cx="12" cy="12" r="8.5" />
+                <path d="M3.5 12h17" />
+                <path d="M12 3.5c2.3 2.4 3.5 5.4 3.5 8.5s-1.2 6.1-3.5 8.5c-2.3-2.4-3.5-5.4-3.5-8.5S9.7 5.9 12 3.5Z" />
+              </svg>
+              <span data-lang-menu-code>RU</span>
             </button>
-            <button
-              type="button"
-              data-lang="kk"
-              aria-pressed="false"
-              class="min-w-11 rounded-pill border border-stone px-2 py-2.5 text-small font-medium text-espresso transition-colors hover:border-cocoa aria-pressed:border-cocoa aria-pressed:bg-cocoa aria-pressed:text-white sm:px-3"
+
+            <!-- hidden, а не утилита display: в base-слое он усилен !important
+                 и побеждает grid на самом списке. -->
+            <div
+              id="lang-menu-header"
+              data-lang-menu-list
+              role="menu"
+              aria-labelledby="lang-menu-header-button"
+              hidden
+              class="absolute top-full right-0 mt-2 grid min-w-40 gap-0.5 rounded-md border border-stone/25 bg-milk p-1.5"
             >
-              ҚАЗ
-            </button>
+              <button
+                type="button"
+                role="menuitem"
+                tabindex="-1"
+                data-lang="ru"
+                class="flex min-h-11 items-center rounded-sm px-3 text-left text-small text-espresso transition-colors hover:bg-blush aria-[current=true]:font-medium"
+              ></button>
+              <button
+                type="button"
+                role="menuitem"
+                tabindex="-1"
+                data-lang="kk"
+                class="flex min-h-11 items-center rounded-sm px-3 text-left text-small text-espresso transition-colors hover:bg-blush aria-[current=true]:font-medium"
+              ></button>
+            </div>
           </div>
 
           <!-- Счётчик подписан в aria-label кнопки, поэтому сам он aria-hidden. -->
@@ -222,10 +265,18 @@
              кириллицей: видимый слой закрыт aria-hidden, рядом sr-only с тем
              же ключом hero.title. Оба span'а наполняет translateTree; латиницу
              поверх видимого кладёт ui/hero.js и только при lang=kk, поэтому
-             русская версия остаётся кириллической без единой строчки JS. -->
+             русская версия остаётся кириллической без единой строчки JS.
+
+             font-wide стоит на видимом span'е в разметке, а не вешается из JS:
+             Unbounded теперь несёт оба заголовка. Русский идёт подмножеством
+             cyrillic — оно у Unbounded настоящее, все буквы «Кофе в центре
+             степи» проверены по cmap. Казахскому кириллица не годится (ғ, қ, ң
+             и ещё пять букв живут в пустом cyrillic-ext), поэтому он и
+             показывается латиницей. sr-only-двойник класс не получает: там
+             лежит казахская кириллица, и её Unbounded не нарисует. -->
         <h1 class="text-h3 font-bold tracking-[-0.03em] text-espresso sm:text-h2 lg:text-h1">
           <span class="sr-only" data-i18n="hero.title">Кофе в центре степи</span>
-          <span data-hero-title aria-hidden="true" data-i18n="hero.title"
+          <span data-hero-title aria-hidden="true" data-i18n="hero.title" class="font-wide"
             >Кофе в центре степи</span
           >
         </h1>
@@ -235,8 +286,8 @@
                в первый экран. Прижатие к низу фото уводило CTA за фолд. -->
           <div class="lg:col-span-5 lg:pt-2">
             <p data-i18n="hero.subtitle" class="measure text-lead text-espresso/75">
-              Кофейня в Астане. Обжарка своя, зерно приходит на точку через три дня после
-              ростера. Открываемся в 8:00.
+              Обжариваем сами, в Астане. Зерно приходит на точку через три дня после
+              ростера — в чашке кофе этой недели. Открыто с 8:00 до 22:00.
             </p>
 
             <div class="mt-8 flex flex-wrap gap-3">
@@ -273,23 +324,6 @@
           </div>
         </div>
       </section>
-
-      <!-- ==================== ТРИ ФАКТА ==================== -->
-      <div class="shell">
-        <ul
-          class="grid divide-y divide-stone/20 border-y border-stone/20 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
-        >
-          <li class="py-5 sm:pr-6">
-            <span data-i18n="facts.beans" class="text-small text-espresso">18 сортов зерна</span>
-          </li>
-          <li class="py-5 sm:px-6">
-            <span data-i18n="facts.roast" class="text-small text-espresso">Обжариваем в Астане</span>
-          </li>
-          <li class="py-5 sm:pl-6">
-            <span data-i18n="facts.hours" class="text-small text-espresso">Открыто до 22:00</span>
-          </li>
-        </ul>
-      </div>
 
       <!-- ==================== МЕНЮ ==================== -->
       <section id="menu" class="shell pt-16 pb-14 md:pt-24 md:pb-20">
@@ -830,30 +864,61 @@
           </p>
 
           <!-- Второй переключатель языка: длинную страницу не нужно
-               отматывать наверх ради смены языка. -->
-          <div
-            data-lang-switcher
-            role="group"
-            data-i18n-aria-label="a11y.langSwitcher"
-            aria-label="Выбор языка"
-            class="flex items-center gap-1.5"
-          >
+               отматывать наверх ради смены языка. Тот же компонент, что
+               в шапке; состояние общее, потому что оба слушают onLangChange.
+               Раскрывается вверх — ниже него только край страницы. -->
+          <div data-lang-menu class="relative">
             <button
               type="button"
-              data-lang="ru"
-              aria-pressed="true"
-              class="min-w-11 rounded-pill border border-milk/30 px-3 py-2.5 text-small font-medium text-milk transition-colors hover:border-milk aria-pressed:border-milk aria-pressed:bg-milk aria-pressed:text-espresso"
+              id="lang-menu-footer-button"
+              data-lang-menu-toggle
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="lang-menu-footer"
+              data-i18n-aria-label="a11y.langSwitcher"
+              aria-label="Выбор языка"
+              class="flex h-11 items-center gap-1.5 rounded-pill border border-milk/30 px-3 text-small font-medium text-milk transition-colors hover:border-milk aria-expanded:border-milk"
             >
-              RU
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                class="h-5 w-5"
+              >
+                <circle cx="12" cy="12" r="8.5" />
+                <path d="M3.5 12h17" />
+                <path d="M12 3.5c2.3 2.4 3.5 5.4 3.5 8.5s-1.2 6.1-3.5 8.5c-2.3-2.4-3.5-5.4-3.5-8.5S9.7 5.9 12 3.5Z" />
+              </svg>
+              <span data-lang-menu-code>RU</span>
             </button>
-            <button
-              type="button"
-              data-lang="kk"
-              aria-pressed="false"
-              class="min-w-11 rounded-pill border border-milk/30 px-3 py-2.5 text-small font-medium text-milk transition-colors hover:border-milk aria-pressed:border-milk aria-pressed:bg-milk aria-pressed:text-espresso"
+
+            <!-- Прижимаем к тому краю, от которого есть место: на мобильном
+                 переключатель стоит слева колонки, с sm уезжает вправо. -->
+            <div
+              id="lang-menu-footer"
+              data-lang-menu-list
+              role="menu"
+              aria-labelledby="lang-menu-footer-button"
+              hidden
+              class="absolute bottom-full left-0 mb-2 grid min-w-40 gap-0.5 rounded-md border border-milk/25 bg-espresso p-1.5 sm:right-0 sm:left-auto"
             >
-              ҚАЗ
-            </button>
+              <button
+                type="button"
+                role="menuitem"
+                tabindex="-1"
+                data-lang="ru"
+                class="flex min-h-11 items-center rounded-sm px-3 text-left text-small text-milk transition-colors hover:bg-milk/10 aria-[current=true]:font-medium"
+              ></button>
+              <button
+                type="button"
+                role="menuitem"
+                tabindex="-1"
+                data-lang="kk"
+                class="flex min-h-11 items-center rounded-sm px-3 text-left text-small text-milk transition-colors hover:bg-milk/10 aria-[current=true]:font-medium"
+              ></button>
+            </div>
           </div>
         </div>
       </div>

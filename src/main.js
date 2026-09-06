@@ -1,6 +1,6 @@
-import { LANGS, locale } from './data/locale.js';
-import { initI18n, applyLang, getLang, onLangChange, t } from './i18n.js';
+import { initI18n, onLangChange, t } from './i18n.js';
 import { initCart } from './cart.js';
+import { initLangMenus } from './ui/lang-menu.js';
 import { initHero } from './ui/hero.js';
 import { initMenuSection } from './ui/menu.js';
 import { initWeekly } from './ui/weekly.js';
@@ -33,49 +33,6 @@ function initHeader() {
 
   window.addEventListener('scroll', update, { passive: true });
   update();
-}
-
-/**
- * Переключатели языков. Их два — в шапке и в подвале, — поэтому работаем
- * со всеми сразу: нажатие в одном должно подсветиться и в другом.
- *
- * Подписи (RU / ҚАЗ) берём из LANGS, а не из словаря: название языка
- * не переводится — кнопка «ҚАЗ» подписана так же и в русском интерфейсе.
- */
-function initLangSwitcher() {
-  const switchers = [...document.querySelectorAll('[data-lang-switcher]')];
-  if (switchers.length === 0) return;
-
-  const buttons = switchers.flatMap((switcher) => [
-    ...switcher.querySelectorAll('[data-lang]'),
-  ]);
-
-  for (const button of buttons) {
-    const lang = LANGS.find((item) => item.code === button.dataset.lang);
-    if (!lang) continue;
-    button.textContent = lang.short;
-    // Подпись для скринридера — на языке самой кнопки, поэтому рядом нужен
-    // lang: иначе синтезатор прочитает казахскую фразу русским голосом.
-    button.lang = lang.code;
-    button.setAttribute('aria-label', locale[lang.code].a11y.switchTo);
-  }
-
-  const sync = (lang) => {
-    for (const button of buttons) {
-      button.setAttribute('aria-pressed', String(button.dataset.lang === lang));
-    }
-  };
-
-  for (const switcher of switchers) {
-    switcher.addEventListener('click', (event) => {
-      const button = event.target.closest('[data-lang]');
-      if (!button || !switcher.contains(button)) return;
-      applyLang(button.dataset.lang);
-    });
-  }
-
-  onLangChange(sync);
-  sync(getLang());
 }
 
 /**
@@ -147,12 +104,20 @@ function initMobileMenu() {
 initI18n();
 initCart();
 initHeader();
-initLangSwitcher();
+const langMenus = initLangMenus();
 const mobileMenu = initMobileMenu();
 initHero();
 initMenuSection();
 initWeekly();
 initMap();
 initContactForm();
-// Корзина открывается поверх всего, поэтому мобильное меню перед ней закрываем.
-initCartPanel({ onBeforeOpen: () => mobileMenu?.close() });
+// Корзина открывается поверх всего, поэтому мобильное меню и меню языков
+// перед ней закрываем. Для меню языков это не косметика: панель помечает
+// всё, кроме себя, атрибутом inert, и фокус, оставшийся внутри открытого
+// меню в шапке, пропал бы вместе с шапкой.
+initCartPanel({
+  onBeforeOpen: () => {
+    mobileMenu?.close();
+    langMenus?.closeAll();
+  },
+});
