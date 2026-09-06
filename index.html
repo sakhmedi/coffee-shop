@@ -351,6 +351,13 @@
           data-menu-grid
           class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         ></div>
+
+        <!-- Добавление из карточки объявляется здесь, а не тостом: количество
+             видно глазами прямо в карточке. Регион нужен собственный — тот, что
+             лежит в панели корзины, пока она закрыта, помечен inert и не звучит.
+             Этот, наоборот, становится inert вместе с main при открытии панели,
+             поэтому в каждый момент говорит ровно один из двух. -->
+        <p data-menu-live class="sr-only" aria-live="polite" aria-atomic="true"></p>
       </section>
 
       <!-- ==================== НАПИТОК НЕДЕЛИ ==================== -->
@@ -1050,19 +1057,52 @@
         ></p>
         <h3 data-name class="font-display text-lead font-semibold text-espresso"></h3>
         <p data-desc class="mt-2 text-small text-espresso/75"></p>
-        <!-- Цена и кнопка всегда в столбик: при justify-between короткая цена
-             («900 ₸») оставляла кнопку в строке, а длинная переносила её,
-             и кнопки в соседних карточках оказывались на разной высоте. -->
-        <div class="mt-auto flex flex-col items-start gap-4 pt-6">
-          <p class="tnum flex items-baseline gap-2">
+
+        <!-- Цена слева, управление справа. mt-auto прижимает блок к низу
+             карточки, items-end равняет по нижнему краю — поэтому кнопки во всех
+             карточках ряда стоят на одной высоте, во сколько бы строк ни легли
+             описание и цена. Сама цена переносится внутри себя (flex-wrap):
+             в самой узкой колонке старая перечёркнутая цена уходит под новую,
+             а управление не сжимается. -->
+        <div class="mt-auto flex items-end justify-between gap-3 pt-6">
+          <p class="tnum flex flex-wrap items-baseline gap-x-2">
             <span data-price class="font-display text-h3 font-semibold text-caramel"></span>
             <s data-old-price class="text-small text-espresso/75"></s>
           </p>
-          <button
-            type="button"
-            data-add
-            class="rounded-pill bg-espresso px-4 py-3 text-small font-medium text-milk transition-colors hover:bg-cocoa"
-          ></button>
+
+          <!-- Пока напитка нет в корзине — одна кнопка «+»; как только появился,
+               она прячется и на её месте встаёт счётчик «− 1 +». Обе формы лежат
+               в разметке и переключаются атрибутом hidden: пересборка узлов
+               теряла бы фокус на каждом клике. Заливка только у «+» — это
+               главный CTA карточки; счётчик уже не призыв к действию, а
+               регулятор количества, и выглядит как степпер в панели корзины. -->
+          <div data-card-control class="shrink-0">
+            <button
+              type="button"
+              data-add
+              class="grid h-11 w-11 place-items-center rounded-pill bg-espresso text-lead text-milk transition-colors hover:bg-cocoa"
+            >
+              +
+            </button>
+
+            <div data-card-stepper hidden class="flex items-center gap-1">
+              <button
+                type="button"
+                data-qty="dec"
+                class="grid h-11 w-11 place-items-center rounded-pill border border-stone/40 text-lead text-espresso transition-colors hover:border-espresso hover:bg-blush"
+              >
+                −
+              </button>
+              <span data-card-qty class="tnum w-7 text-center text-espresso"></span>
+              <button
+                type="button"
+                data-qty="inc"
+                class="grid h-11 w-11 place-items-center rounded-pill border border-stone/40 text-lead text-espresso transition-colors hover:border-espresso hover:bg-blush"
+              >
+                +
+              </button>
+            </div>
+          </div>
         </div>
       </article>
     </template>

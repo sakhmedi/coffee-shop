@@ -23,25 +23,11 @@ export const menu = [
     price: 900,
   },
   {
-    id: 'doppio',
-    category: 'classic',
-    name: { ru: 'Доппио', kk: 'Доппио' },
-    desc: { ru: 'Двойной эспрессо', kk: 'Қос эспрессо' },
-    price: 1100,
-  },
-  {
     id: 'americano',
     category: 'classic',
     name: { ru: 'Американо', kk: 'Американо' },
     desc: { ru: 'Эспрессо и горячая вода', kk: 'Эспрессо және ыстық су' },
     price: 1100,
-  },
-  {
-    id: 'lungo',
-    category: 'classic',
-    name: { ru: 'Лунго', kk: 'Лунго' },
-    desc: { ru: 'Долгий эспрессо, больше воды', kk: 'Ұзақ эспрессо, суы көбірек' },
-    price: 1150,
   },
 
   // --- На молоке ---
@@ -71,16 +57,6 @@ export const menu = [
       kk: 'Қос эспрессо және микрокөбік',
     },
     price: 1500,
-  },
-  {
-    id: 'cortado',
-    category: 'milk',
-    name: { ru: 'Кортадо', kk: 'Кортадо' },
-    desc: {
-      ru: 'Эспрессо пополам с молоком',
-      kk: 'Эспрессо мен сүт тең мөлшерде',
-    },
-    price: 1300,
   },
   {
     id: 'macchiato',
@@ -133,20 +109,6 @@ export const menu = [
 
   // --- Авторские ---
   {
-    id: 'saryarka-latte',
-    category: 'author',
-    name: { ru: 'Латте «Сарыарқа»', kk: '«Сарыарқа» латте' },
-    desc: { ru: 'Латте с облепихой', kk: 'Шырғанақты латте' },
-    price: 2000,
-  },
-  {
-    id: 'apricot-latte',
-    category: 'author',
-    name: { ru: 'Латте с курагой', kk: 'Өрікті латте' },
-    desc: { ru: 'Сироп из кураги и корицы', kk: 'Өрік пен даршын сиропы' },
-    price: 1900,
-  },
-  {
     id: 'baked-milk-raf',
     category: 'author',
     name: { ru: 'Раф на топлёном молоке', kk: 'Қаймақты раф' },
@@ -175,16 +137,6 @@ export const menu = [
     name: { ru: 'Карамельный латте', kk: 'Карамельді латте' },
     desc: { ru: 'Солёная карамель', kk: 'Тұзды карамель' },
     price: 1800,
-  },
-  {
-    id: 'vienna-coffee',
-    category: 'sweet',
-    name: { ru: 'Венский кофе', kk: 'Вена кофесі' },
-    desc: {
-      ru: 'Эспрессо и взбитые сливки',
-      kk: 'Эспрессо және шайқалған кілегей',
-    },
-    price: 1700,
   },
   {
     id: 'hot-chocolate',

@@ -1,11 +1,22 @@
 /**
  * Секция «Меню»: фильтры по категориям и карточки напитков.
  * Данные — только из data/menu.js, разметка карточки — из <template>.
+ *
+ * Состояние карточки собственного нет: сколько порций показывать, карточка
+ * всегда спрашивает у корзины. Поэтому количество сходится с панелью в обе
+ * стороны — что бы человек ни менял, меняется один и тот же массив в cart.js,
+ * а обе картинки перерисовываются по CART_CHANGE_EVENT.
  */
 
 import { categories, formatPrice, getMenuByCategory } from '../data/menu.js';
 import { getLang, onLangChange, t } from '../i18n.js';
-import { addItem } from '../cart.js';
+import {
+  decrementItem,
+  findDrink,
+  getItems,
+  incrementItem,
+  onCartChange,
+} from '../cart.js';
 
 const ALL = 'all';
 
@@ -15,6 +26,7 @@ let activeCategory = ALL;
 export function initMenuSection() {
   const filtersEl = document.querySelector('[data-menu-filters]');
   const gridEl = document.querySelector('[data-menu-grid]');
+  const liveEl = document.querySelector('[data-menu-live]');
   const filterTpl = document.querySelector('[data-template="filter-button"]');
   const cardTpl = document.querySelector('[data-template="drink-card"]');
   if (!filtersEl || !gridEl || !filterTpl || !cardTpl) return;
@@ -46,9 +58,37 @@ export function initMenuSection() {
     }
   };
 
+  /**
+   * Приводит карточки к текущему состоянию корзины: «+» или счётчик.
+   * Узлы не пересобираются — переключается hidden, поэтому фокус на кнопке
+   * переживает и добавление, и правку количества из панели.
+   */
+  const syncCards = () => {
+    const lang = getLang();
+    const quantities = new Map(getItems().map((item) => [item.id, item.qty]));
+
+    for (const card of gridEl.children) {
+      const drink = findDrink(card.dataset.id);
+      if (!drink) continue;
+
+      const qty = quantities.get(drink.id) ?? 0;
+      const name = drink.name[lang];
+
+      card.querySelector('[data-add]').hidden = qty > 0;
+      card.querySelector('[data-card-stepper]').hidden = qty === 0;
+      if (qty === 0) continue;
+
+      card.querySelector('[data-card-qty]').textContent = String(qty);
+      // На единице «−» не уменьшает, а удаляет — подпись должна это говорить.
+      const decreaseKey = qty === 1 ? 'a11y.removeItem' : 'a11y.decrease';
+      card
+        .querySelector('[data-qty="dec"]')
+        .setAttribute('aria-label', t(decreaseKey, { name }));
+    }
+  };
+
   const renderCards = () => {
     const lang = getLang();
-    const addLabel = t('actions.addToCart');
     const fragment = document.createDocumentFragment();
 
     for (const drink of getMenuByCategory(activeCategory)) {
@@ -56,9 +96,10 @@ export function initMenuSection() {
       const nameEl = card.querySelector('[data-name]');
       const badgeEl = card.querySelector('[data-badge]');
       const oldPriceEl = card.querySelector('[data-old-price]');
-      const button = card.querySelector('[data-add]');
+      const name = drink.name[lang];
 
-      nameEl.textContent = drink.name[lang];
+      card.dataset.id = drink.id;
+      nameEl.textContent = name;
       card.querySelector('[data-desc]').textContent = drink.desc[lang];
       card.querySelector('[data-price]').textContent = formatPrice(drink.price);
 
@@ -74,13 +115,20 @@ export function initMenuSection() {
       if (drink.oldPrice) oldPriceEl.textContent = formatPrice(drink.oldPrice);
       else oldPriceEl.remove();
 
-      button.textContent = addLabel;
-      button.dataset.add = drink.id;
+      // Кнопок в сетке много, поэтому у каждой подпись с названием напитка:
+      // «В корзину» без уточнения в списке из пятнадцати штук бесполезно.
+      card
+        .querySelector('[data-add]')
+        .setAttribute('aria-label', t('a11y.addToCart', { name }));
+      card
+        .querySelector('[data-qty="inc"]')
+        .setAttribute('aria-label', t('a11y.increase', { name }));
 
       fragment.append(card);
     }
 
     gridEl.replaceChildren(fragment);
+    syncCards();
   };
 
   filtersEl.addEventListener('click', (event) => {
@@ -92,14 +140,42 @@ export function initMenuSection() {
   });
 
   gridEl.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-add]');
-    if (button) addItem(button.dataset.add);
+    const button = event.target.closest('[data-add], [data-qty]');
+    const card = event.target.closest('[data-id]');
+    if (!button || !card) return;
+
+    const drink = findDrink(card.dataset.id);
+    if (!drink) return;
+
+    const name = drink.name[getLang()];
+    const isDecrease = button.dataset.qty === 'dec';
+
+    if (isDecrease) decrementItem(drink.id);
+    else incrementItem(drink.id);
+
+    // Событие корзины синхронное: syncCards уже отработал, и кнопка, на которую
+    // мы переводим фокус, видима. Без этого фокус ушёл бы в body вместе
+    // со спрятанной кнопкой — с клавиатуры карточка становилась бы тупиком.
+    // «+» степпера стоит там же, где стоял одиночный «+», поэтому после
+    // добавления палец и курсор остаются на месте.
+    const collapsed = card.querySelector('[data-card-stepper]').hidden;
+    const next = collapsed ? '[data-add]' : isDecrease ? '[data-qty="dec"]' : '[data-qty="inc"]';
+    card.querySelector(next).focus();
+
+    if (!liveEl) return;
+    const qty = getItems().find((item) => item.id === drink.id)?.qty;
+    liveEl.textContent = qty
+      ? t('cart.announceQty', { name, qty })
+      : t('cart.announceRemoved', { name });
   });
 
   onLangChange(() => {
     syncFilters();
     renderCards();
   });
+
+  // Количество могли поменять в панели корзины — карточка обязана показать то же.
+  onCartChange(syncCards);
 
   buildFilters();
   syncFilters();
