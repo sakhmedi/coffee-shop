@@ -306,14 +306,15 @@
             </div>
           </div>
 
-          <!-- Фото пока нет: остаётся мягкий градиент blush → milk.
-               onerror убирает битую картинку, вёрстка держится на контейнере. -->
+          <!-- Градиент blush → milk лежит под фото: он виден, пока картинка
+               грузится, и остаётся один, если она не пришла — onerror убирает
+               битую картинку, а вёрстка держится на контейнере, не на img. -->
           <div
             class="relative aspect-4/3 overflow-hidden rounded-lg bg-linear-to-br from-blush to-milk lg:col-span-6 lg:col-start-7 lg:aspect-4/5"
           >
             <img
               src="/images/hero.jpg"
-              alt="Стакан кофе на деревянной стойке"
+              alt="Бариста готовит кофе за эспрессо-машиной, позади окно"
               data-i18n-alt="hero.imageAlt"
               width="1200"
               height="1500"
@@ -394,17 +395,18 @@
            секции не читались как один и тот же макет. -->
       <section id="about" class="shell pb-16 md:pb-24">
         <div class="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-x-12">
-          <!-- Фото пока нет: остаётся тёплая подложка. blush здесь не берём —
-               он уже занят в hero и в «Напитке недели». -->
+          <!-- Подложка под фото тёплая, но не blush: он уже занят в hero
+               и в «Напитке недели», третья секция на нём сделала бы акцент
+               фоном. Имя файла — по конвенции из public/images/.gitkeep. -->
           <div
             class="relative aspect-4/3 overflow-hidden rounded-lg bg-linear-to-br from-caramel/20 to-milk lg:col-span-5 lg:aspect-square"
           >
             <img
-              src="/images/about.jpg"
-              alt="Ростер и мешки с зерном в обжарочной"
+              src="/images/interior-01.jpg"
+              alt="Столик у окна, на нём стеклянная ваза с цветком и стакан кофе со льдом"
               data-i18n-alt="about.imageAlt"
-              width="1000"
-              height="1000"
+              width="1200"
+              height="1500"
               loading="lazy"
               onerror="this.style.display='none'"
               class="absolute inset-0 h-full w-full object-cover"
@@ -415,17 +417,19 @@
             <h2 data-i18n="about.title" class="text-h3 text-espresso sm:text-h2">О нас</h2>
 
             <p data-i18n="about.p1" class="measure mt-6 text-lead text-espresso">
-              Зерно обжариваем сами — здесь же, в Астане, партиями по двенадцать
-              килограммов. Партия расходится за три-четыре дня, поэтому в чашку попадает
-              кофе этой недели, а не прошлого месяца.
+              Мы открыли DALA COFFEE, потому что самим не хватало такого места. Где не шумит
+              очередь, где можно сесть с книгой на час и никто не подойдёт спросить, будете
+              ли вы что-то ещё.
             </p>
             <p data-i18n="about.p2" class="measure mt-5 text-espresso/75">
-              Воду фильтруем, картриджи меняем по графику, а не когда заметим. На городской
-              воде тот же кофе горчит — разницу слышно с первого глотка.
+              Зимой в Астане ветер выдувает всё тепло за десять шагов. Тогда особенно
+              приятно зайти, обхватить ладонями горячую чашку и почувствовать, как
+              отпускает. У нас всегда найдётся плед на спинке стула и кто-то, кто спросит,
+              как вы добрались.
             </p>
             <p data-i18n="about.p3" class="measure mt-5 text-espresso/75">
-              Зимой наливаем в ваш термостакан бесплатно. Приносите любой — хоть
-              подаренный, хоть купленный не у нас. Скажите об этом на кассе до заказа.
+              Летом мы открываем окна, ставим лёд в стаканы и выносим столики на улицу.
+              Люди заходят на пять минут и остаются на час. Мы не против.
             </p>
           </div>
         </div>
@@ -437,9 +441,6 @@
       <section id="addresses" class="shell pb-16 md:pb-24">
         <div class="measure">
           <h2 data-i18n="addresses.title" class="text-h3 text-espresso sm:text-h2">Адреса</h2>
-          <p data-i18n="addresses.lead" class="mt-3 text-espresso/75">
-            Две точки в Астане. Кофе с собой готовим на обеих.
-          </p>
         </div>
 
         <!-- Обёртка нужна, чтобы при сбое спрятать карту вместе с атрибуцией:
@@ -465,14 +466,7 @@
               href="https://www.esri.com/en-us/legal/terms/full-master-agreement"
               target="_blank"
               rel="noopener noreferrer"
-              ><span data-i18n="addresses.mapEsri">© Esri</span
-              ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span></a
-            >,
-            <a
-              href="https://www.openstreetmap.org/copyright"
-              target="_blank"
-              rel="noopener noreferrer"
-              ><span data-i18n="addresses.mapOsm">© участники OpenStreetMap</span
+              ><span data-i18n="addresses.mapEsri">© Esri и поставщики данных</span
               ><span class="sr-only" data-i18n="a11y.newTab">, откроется в новой вкладке</span></a
             >
           </p>
@@ -488,7 +482,7 @@
               data-i18n="addresses.nurAlem.name"
               class="font-display text-lead font-semibold text-espresso"
             >
-              Nur Alem, шар на ЭКСПО
+              Alem AI
             </h3>
             <p data-i18n="addresses.nurAlem.street" class="mt-2 text-espresso">
               пр. Мәңгілік Ел, 55
@@ -869,70 +863,10 @@
           </div>
         </div>
 
-        <div
-          class="mt-12 flex flex-col gap-5 border-t border-milk/15 pt-6 sm:flex-row sm:items-center sm:justify-between"
-        >
+        <div class="mt-12 border-t border-milk/15 pt-6">
           <p data-i18n="footer.copy" class="text-caption text-milk/70">
             © 2026 DALA COFFEE. Вымышленная кофейня, сайт учебный
           </p>
-
-          <!-- Второй переключатель языка: длинную страницу не нужно
-               отматывать наверх ради смены языка. Тот же компонент, что
-               в шапке; состояние общее, потому что оба слушают onLangChange.
-               Раскрывается вверх — ниже него только край страницы. -->
-          <div data-lang-menu class="relative">
-            <button
-              type="button"
-              id="lang-menu-footer-button"
-              data-lang-menu-toggle
-              aria-haspopup="true"
-              aria-expanded="false"
-              aria-controls="lang-menu-footer"
-              data-i18n-aria-label="a11y.langSwitcher"
-              aria-label="Выбор языка"
-              class="flex h-11 items-center gap-1.5 rounded-pill border border-milk/30 px-3 text-small font-medium text-milk transition-colors hover:border-milk aria-expanded:border-milk"
-            >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.6"
-                class="h-5 w-5"
-              >
-                <circle cx="12" cy="12" r="8.5" />
-                <path d="M3.5 12h17" />
-                <path d="M12 3.5c2.3 2.4 3.5 5.4 3.5 8.5s-1.2 6.1-3.5 8.5c-2.3-2.4-3.5-5.4-3.5-8.5S9.7 5.9 12 3.5Z" />
-              </svg>
-              <span data-lang-menu-code>RU</span>
-            </button>
-
-            <!-- Прижимаем к тому краю, от которого есть место: на мобильном
-                 переключатель стоит слева колонки, с sm уезжает вправо. -->
-            <div
-              id="lang-menu-footer"
-              data-lang-menu-list
-              role="menu"
-              aria-labelledby="lang-menu-footer-button"
-              hidden
-              class="absolute bottom-full left-0 mb-2 grid min-w-40 gap-0.5 rounded-md border border-milk/25 bg-espresso p-1.5 sm:right-0 sm:left-auto"
-            >
-              <button
-                type="button"
-                role="menuitem"
-                tabindex="-1"
-                data-lang="ru"
-                class="flex min-h-11 items-center rounded-sm px-3 text-left text-small text-milk transition-colors hover:bg-milk/10 aria-[current=true]:font-medium"
-              ></button>
-              <button
-                type="button"
-                role="menuitem"
-                tabindex="-1"
-                data-lang="kk"
-                class="flex min-h-11 items-center rounded-sm px-3 text-left text-small text-milk transition-colors hover:bg-milk/10 aria-[current=true]:font-medium"
-              ></button>
-            </div>
-          </div>
         </div>
       </div>
     </footer>
